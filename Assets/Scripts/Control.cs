@@ -18,13 +18,20 @@ public class control : MonoBehaviour
     public float globalVx = 0;
     public float globalVy = 0;
     public float globalVr = 0;
-    public float rotationSpeed = 255f; // Adjust this value to control rotation speed
     public float power = 0;
     // Start is called before the first frame update
+
+    public float maxRotationOutput = 500f; // 最大旋转输出值
+    public PIDRotation pid = new PIDRotation();
+
     void Start()
     {
+        pid.P = 3f;
+        pid.I = 0.001f;
+        pid.D = 0f;
         System.Threading.Thread.Sleep(1000);
         robot = GameObject.Find(Connect.team + "_robot" + Connect.robotID.ToString());
+
     }
 
     // Update is called once per frame
@@ -51,11 +58,11 @@ public class control : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Q))
         {
-            packet.velR = 50;
+            packet.velR = 500;
         }
         if (Input.GetKey(KeyCode.E))
         {
-            packet.velR = -50;
+            packet.velR = -500;
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -68,13 +75,17 @@ public class control : MonoBehaviour
         }
         // Rotation towards targetPos
         
-        power = (robot.transform.position - targetObj.transform.position).magnitude;
-        Debug.Log(power);
+        if (Input.GetMouseButton(0))
+        {
+            packet.shootPowerLevel = PowerSet((targetObj.transform.position - robot.transform.position).magnitude);
+            packet.shoot = true;
+        }
+        Debug.Log(packet.shootPowerLevel);
         float[] localVelocities = GlobalToLocalVelocity(globalVx, globalVy);
         packet.velX = localVelocities[0];
         packet.velY = localVelocities[1];
         packet.velR = RotateTowardsTarget();
-        Debug.Log(packet.velR);
+
         packet.Encode();
         Connect.ser.Write(packet.transmitPacket, 0, Constants.TRANSMIT_PACKET_SIZE);
         Connect.ser.BaseStream.Flush();
@@ -91,6 +102,7 @@ public class control : MonoBehaviour
         globalVx = 0;
         globalVy = 0;
         packet.ctrl = false;
+        packet.shoot = false;
     }
 
     public float[] GlobalToLocalVelocity(float global_vx, float global_vy)
@@ -107,48 +119,54 @@ public class control : MonoBehaviour
     {
         if (targetObj == null || robot == null) return 0;
 
-        Vector3 toTarget = robot.transform.position - targetObj.transform.position;
-        toTarget.y = 0; // 忽略垂直差异
+        Vector3 toTarget = robot.transform.position - targetObj.transform.position; // 注意：目标 - 机器人
+        toTarget.y = 0;
 
-        // 处理零向量情况（目标就在正前方/正后方）
         if (toTarget.sqrMagnitude < 0.001f) return 0;
 
-        // 标准化方向并获取当前朝向
-        Vector3 robotForward = robot.transform.forward;
         toTarget.Normalize();
+        Vector3 robotForward = robot.transform.forward;
         robotForward.Normalize();
 
         // 计算带符号的角度差（范围[-180, 180]）
         float angleDiff = Vector3.SignedAngle(robotForward, toTarget, Vector3.up);
 
-        // 动态调整旋转速度（角度越大转得越快）
-        float dynamicSpeed = Mathf.Lerp(
-            0.5f * rotationSpeed,
-            rotationSpeed,
-            Mathf.Clamp01(Mathf.Abs(angleDiff) / 20f) // 45度内开始减速
-        );
+        // 使用PID控制器计算旋转速度
+        float rotationOutput = pid.Compute(angleDiff, Time.deltaTime);
 
-        // 应用旋转（使用最短路径）
-        Quaternion targetRot = Quaternion.LookRotation(toTarget);
-        robot.transform.rotation = Quaternion.RotateTowards(
-            robot.transform.rotation,
-            targetRot,
-            dynamicSpeed * Time.deltaTime
-        );
+        // 限制旋转输出
+        rotationOutput = Mathf.Clamp(rotationOutput, -maxRotationOutput, maxRotationOutput);
 
-        // 重新计算当前角度差（考虑新的旋转状态）
-        angleDiff = Vector3.SignedAngle(robot.transform.forward, toTarget, Vector3.up);
+        // 应用旋转
+        robot.transform.Rotate(Vector3.up, rotationOutput * Time.deltaTime);
+
+        // 重新计算当前角度差（用于死区判断）
+        robotForward = robot.transform.forward;
+        robotForward.Normalize();
+        angleDiff = Vector3.SignedAngle(robotForward, toTarget, Vector3.up);
 
         // 添加死区（避免微小抖动）
         if (Mathf.Abs(angleDiff) < 0.5f) return 0;
 
-        // 计算速度（带方向的比例控制）
-        float velR = Mathf.Clamp(
-            angleDiff * 5f, // 比例系数可根据需要调整
-            -255f,
-            255f
-        );
-
-        return velR;
+        return rotationOutput;
     }
+
+    public float PowerSet(float dist, float rate = 0.05f, float min = 5, float max = 150)
+    {
+
+        // 检查输入参数的有效性
+        if (dist <= 0 || min >= max || rate <= 0)
+        {
+            return min; // 或者返回一个错误值，例如 NaN
+        }
+
+        // 计算比例因子，确保结果在 [0, 1] 范围内
+        float proportion = 1.0f - (float)Math.Exp(-dist * rate); // 使用指数函数，确保比例在 0 到 1 之间
+        proportion = Math.Max(0.0f, Math.Min(1.0f, proportion)); // 限制比例在 [0, 1] 范围内
+
+        // 使用比例因子在最小值和最大值之间进行插值
+        return min + proportion * (max - min);
+    }
+
+
 }
