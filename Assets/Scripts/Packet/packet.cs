@@ -31,7 +31,7 @@ public class packet : MonoBehaviour
         public float velY = 0.0f;
         public float velR = 0.0f;
         public bool ctrl = false;
-        public float ctrlPowerLevel = 1.0f;
+        public float ctrlPowerLevel = 3.0f;
         public bool shoot = false;
         public float shootPowerLevel = 0.0f;
         public bool shootMode = false;
