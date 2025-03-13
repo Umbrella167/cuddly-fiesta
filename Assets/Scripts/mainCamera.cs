@@ -12,7 +12,7 @@ public class mainCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        robot = GameObject.Find(Connect.team + "_robot" + Connect.robotID.ToString());
+        robot = GameObject.Find(Connect_Gate.team + "_robot" + Connect_Gate.robotID.ToString());
         //robot = GameObject.Find("yellow_robot8");
         
     }

@@ -12,10 +12,12 @@ using static packet;
 
 public class Connect : MonoBehaviour
 {
-    public TMP_Dropdown PortDropdown; // 更改为下拉菜单
-    public TMP_Dropdown TeamDropdown; // 更改为下拉菜单
+    public TMP_Dropdown TeamDropdown;
     public TMP_InputField RobotId_Input, Frequency_Input;
     public TextMeshProUGUI SerialStatusText;
+
+    public TMP_Dropdown PortDropdown; // 更改为下拉菜单
+    
 
     public int baudRate = 115200;
     public Parity parity = Parity.None;
@@ -23,10 +25,7 @@ public class Connect : MonoBehaviour
     public StopBits stopBits = StopBits.One;
 
     static public SerialPort ser = null;
-    static public int robotID = 0;
-    static public int frequency = 0;
-    static public string team = "Blue";
-    static public RadioPacket packet = null;
+    
     void Start()
     {
         PopulatePortDropdown();
@@ -84,15 +83,15 @@ public class Connect : MonoBehaviour
 
     public void ButtonOnClickEvent()
     {
-        team = TeamDropdown.options[TeamDropdown.value].text;
+        Connect_Gate.team = TeamDropdown.options[TeamDropdown.value].text;
         // 验证输入
-        if (!int.TryParse(RobotId_Input.text, out robotID))
+        if (!int.TryParse(RobotId_Input.text, out Connect_Gate.robotID))
         {
             UpdateStatus("无效的机器人ID");
             return;
         }
 
-        if (!int.TryParse(Frequency_Input.text, out frequency))
+        if (!int.TryParse(Frequency_Input.text, out Connect_Gate.frequency))
         {
             UpdateStatus("无效的频率值");
             return;
@@ -114,14 +113,13 @@ public class Connect : MonoBehaviour
 
         }
         // 准备并发送数据
-
-        packet = new RadioPacket(frequency);
-        ser.Write(packet.start_packet1, 0, packet.start_packet1.Length);
+        Connect_Gate.packet = new RadioPacket(Connect_Gate.frequency);
+        ser.Write(Connect_Gate.packet.start_packet1, 0, Connect_Gate.packet.start_packet1.Length);
         ser.BaseStream.Flush();
         UpdateStatus($"数据已发送至 {selectedPort}");
 
         float start_time = Time.time;
-        while (Time.time - start_time < 2) 
+        while (Time.time - start_time < 2)
         {
             if (ser.IsOpen && ser.BytesToRead > 0)
             {
@@ -131,8 +129,9 @@ public class Connect : MonoBehaviour
             System.Threading.Thread.Sleep(10);
         }
         System.Threading.Thread.Sleep(2000);
-        ser.Write(packet.start_packet2, 0, packet.start_packet2.Length);
+        ser.Write(Connect_Gate.packet.start_packet2, 0, Connect_Gate.packet.start_packet2.Length);
         ser.BaseStream.Flush();
+        Connect_Gate.isender = new SerialHandler(ser);
 
         SceneManager.LoadScene("World");
 

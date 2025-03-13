@@ -10,13 +10,17 @@ using System;
 using System.Linq;
 using static packet;
 using System.Net;
+using System.Runtime.InteropServices.ComTypes;
+using UnityEditor.VersionControl;
+using System.Text;
 
 public class Connect_Server : MonoBehaviour
 {
-    public TMP_InputField IP_Input; // 更改为输入框
-    public TMP_Dropdown TeamDropdown; // 更改为下拉菜单
-    public TMP_InputField RobotId_Input, Port_Input;
+    public TMP_Dropdown TeamDropdown;
+    public TMP_InputField RobotId_Input, Frequency_Input;
     public TextMeshProUGUI SocketStatusText;
+
+    public TMP_InputField IP_Input, Port_Input;
 
     static public string ipAddress = "127.0.0.1"; // Default IP
     static public int port = 114514; // Default Port
@@ -60,9 +64,10 @@ public class Connect_Server : MonoBehaviour
 
     public void ButtonOnClickEvent()
     {
-        team = TeamDropdown.options[TeamDropdown.value].text;
+        Connect_Gate.team = TeamDropdown.options[TeamDropdown.value].text;
+
         // 验证输入
-        if (!int.TryParse(RobotId_Input.text, out robotID))
+        if (!int.TryParse(RobotId_Input.text, out Connect_Gate.robotID))
         {
             UpdateStatus("无效的机器人ID");
             return;
@@ -71,6 +76,12 @@ public class Connect_Server : MonoBehaviour
         if (!int.TryParse(Port_Input.text, out port))
         {
             UpdateStatus("无效的端口值");
+            return;
+        }
+
+        if (!int.TryParse(Frequency_Input.text, out Connect_Gate.frequency))
+        {
+            UpdateStatus("无效的频率值");
             return;
         }
 
@@ -86,6 +97,9 @@ public class Connect_Server : MonoBehaviour
         {
             return;
         }
+        Debug.Log($"测试测试: {Connect_Gate.frequency}");
+        Connect_Gate.packet = new RadioPacket(Connect_Gate.frequency);
+        Connect_Gate.isender = new SocketHandler(client);
         SceneManager.LoadScene("World");
 
     }
@@ -96,12 +110,12 @@ public class Connect_Server : MonoBehaviour
         //SocketStatusText.text = $"{message}";
     }
 
-    void OnDestroy()
-    {
-        if (client != null && client.Connected)
-        {
-            client.Close();
-            UpdateStatus("Socket已关闭");
-        }
-    }
+    //void OnDestroy()
+    //{
+    //    if (client != null && client.Connected)
+    //    {
+    //        client.Close();
+    //        UpdateStatus("Socket已关闭");
+    //    }
+    //}
 }

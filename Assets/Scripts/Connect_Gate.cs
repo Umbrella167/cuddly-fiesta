@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static packet;
 
 public class Connect_Gate : MonoBehaviour
 {
+    
     public TMP_Dropdown ConnectMode;
     public GameObject Serial_Mode;
     public GameObject Socket_Mode;
+
+    static public int robotID = 0;
+    static public int frequency = 0;
+    static public string team = null;
+    static public RadioPacket packet = null;
+    static public ISender isender = null;
 
     void Start()
     {

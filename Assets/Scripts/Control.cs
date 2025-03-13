@@ -10,27 +10,36 @@ using static packet;
 public class control : MonoBehaviour
 {
     GameObject robot = null;
-    int control_robot_id = Connect.robotID;
-    int control_frequency = Connect.frequency;
+    int control_robot_id = Connect_Gate.robotID;
+    int control_frequency = Connect_Gate.frequency;
+    string control_team = Connect_Gate.team;
     public GameObject targetObj;
-    public RadioPacket packet = Connect.packet;
+    public RadioPacket packet = Connect_Gate.packet;
     public float globalVx = 0;
     public float globalVy = 0;
     public float globalVr = 0;
     public float power = 0;
     // Start is called before the first frame update
 
+    public ConnectHandler handler;
+
     public float maxRotationOutput = 500f; // 最大旋转输出值
     public PIDRotation pid = new PIDRotation();
 
+    void InitConnectHandler()
+    {
+        handler = new ConnectHandler(Connect_Gate.isender);
+    }
+
     void Start()
     {
+        InitConnectHandler();
+
         pid.P = 3f;
         pid.I = 0.001f;
         pid.D = 0f;
         System.Threading.Thread.Sleep(1000);
-        robot = GameObject.Find(Connect.team + "_robot" + Connect.robotID.ToString());
-
+        robot = GameObject.Find(control_team + "_robot" + control_robot_id.ToString());
     }
 
     // Update is called once per frame
@@ -79,15 +88,14 @@ public class control : MonoBehaviour
             packet.shootPowerLevel = PowerSet((targetObj.transform.position - robot.transform.position).magnitude);
             packet.shoot = true;
         }
-        Debug.Log(packet.shootPowerLevel);
+        //Debug.Log(packet.shootPowerLevel);
         float[] localVelocities = GlobalToLocalVelocity(globalVx, globalVy);
         packet.velX = localVelocities[0];
         packet.velY = localVelocities[1];
         packet.velR = RotateTowardsTarget();
 
         packet.Encode();
-        Connect.ser.Write(packet.transmitPacket, 0, Constants.TRANSMIT_PACKET_SIZE);
-        Connect.ser.BaseStream.Flush();
+        handler.Send(packet.transmitPacket);
         System.Threading.Thread.Sleep(1);
     }
 
