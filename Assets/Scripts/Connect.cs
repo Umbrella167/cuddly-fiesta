@@ -15,7 +15,7 @@ public class Connect : MonoBehaviour
     public TMP_Dropdown PortDropdown; // 更改为下拉菜单
     public TMP_Dropdown TeamDropdown; // 更改为下拉菜单
     public TMP_InputField RobotId_Input, Frequency_Input;
-    public TextMeshProUGUI ConnectionStatusText;
+    public TextMeshProUGUI SerialStatusText;
 
     public int baudRate = 115200;
     public Parity parity = Parity.None;
@@ -141,8 +141,7 @@ public class Connect : MonoBehaviour
     private void UpdateStatus(string message)
     {
         Debug.Log(message);
-        ConnectionStatusText.text = $"状态: {message}";
-        ConnectionStatusText.color = message.StartsWith("成功") ? Color.green : Color.red;
+        SerialStatusText.text = $"{message}";
     }
 
     void OnDestroy()

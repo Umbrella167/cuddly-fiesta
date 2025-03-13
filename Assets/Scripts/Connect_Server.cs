@@ -16,7 +16,7 @@ public class Connect_Server : MonoBehaviour
     public TMP_InputField IP_Input; // 更改为输入框
     public TMP_Dropdown TeamDropdown; // 更改为下拉菜单
     public TMP_InputField RobotId_Input, Port_Input;
-    public TextMeshProUGUI ConnectionStatusText;
+    public TextMeshProUGUI SocketStatusText;
 
     static public string ipAddress = "127.0.0.1"; // Default IP
     static public int port = 114514; // Default Port
@@ -93,8 +93,7 @@ public class Connect_Server : MonoBehaviour
     private void UpdateStatus(string message)
     {
         Debug.Log(message);
-        ConnectionStatusText.text = $"状态: {message}";
-        ConnectionStatusText.color = message.StartsWith("成功") ? Color.green : Color.red;
+        //SocketStatusText.text = $"{message}";
     }
 
     void OnDestroy()
