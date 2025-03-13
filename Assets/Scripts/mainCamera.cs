@@ -14,10 +14,6 @@ public class mainCamera : MonoBehaviour
     {
         robot = GameObject.Find(Connect.team + "_robot" + Connect.robotID.ToString());
         //robot = GameObject.Find("yellow_robot8");
-        Instantiate(PowerRageBoundary);
-        Instantiate(MouseImage);
-        PowerRageBoundary = GameObject.Find("boundary(Clone)");
-        MouseImage = GameObject.Find("target(Clone)");
         
     }
 
@@ -33,15 +29,10 @@ public class mainCamera : MonoBehaviour
         {
             MouseImage.transform.position = new Vector3(hit.point.x, 0.06f, hit.point.z);
         }
-        //Vector3 mousePosition = Input.mousePosition;
-        //mousePosition.z = 30;
-        //Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        //worldPosition.y = 0.01f;
-        //MouseImage.transform.position = worldPosition;
-        //MouseImage.transform.position = new Vector3(MouseImage.transform.position.x, 0.1f, MouseImage.transform.position.z);
+        
         PowerRageBoundary.transform.position = robot.transform.position;
 
         Vector3 playerPos = robot.transform.position;
-        transform.position = Vector3.Lerp(transform.position, playerPos + Vector3.back * 25 + Vector3.up * 30f - Vector3.left * 3.8f, 10f * Time.deltaTime);
+        //transform.position = Vector3.Lerp(transform.position, playerPos + Vector3.back * 25 + Vector3.up * 30f - Vector3.left * 3.8f, 1000f * Time.deltaTime);
     }
 }
