@@ -173,6 +173,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06b80e8e834ed444b7c39ca46d926f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TeamDropdown: {fileID: 0}
+  RobotId_Input: {fileID: 0}
+  Frequency_Input: {fileID: 0}
+  SocketStatusText: {fileID: 0}
+  IP_Input: {fileID: 1200560478}
+  Port_Input: {fileID: 769467894}
+  Connect_Socket_Button: {fileID: 0}
 --- !u!114 &16792745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2085,7 +2092,7 @@ GameObject:
   - component: {fileID: 866028618}
   - component: {fileID: 866028617}
   m_Layer: 5
-  m_Name: Client_Mode
+  m_Name: Socket_Mode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5845,9 +5852,9 @@ GameObject:
   - component: {fileID: 1829309402}
   - component: {fileID: 1829309401}
   - component: {fileID: 1829309400}
-  - component: {fileID: 1829309403}
+  - component: {fileID: 1829309399}
   m_Layer: 5
-  m_Name: Connect_Client_Button
+  m_Name: Connect_Socket_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5873,6 +5880,25 @@ RectTransform:
   m_AnchoredPosition: {x: 710, y: -433}
   m_SizeDelta: {x: 326.6027, y: 89.8727}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1829309399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829309397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d06b80e8e834ed444b7c39ca46d926f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TeamDropdown: {fileID: 873332994}
+  RobotId_Input: {fileID: 583487981}
+  Frequency_Input: {fileID: 1523594536}
+  SocketStatusText: {fileID: 532180200}
+  IP_Input: {fileID: 1200560478}
+  Port_Input: {fileID: 769467894}
+  Connect_Socket_Button: {fileID: 1829309400}
 --- !u!114 &1829309400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5917,7 +5943,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: ddec50f269f1ee34ea380c5090131686, type: 3}
+      - m_Target: {fileID: 11500000, guid: d06b80e8e834ed444b7c39ca46d926f6, type: 3}
         m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
         m_MethodName: 
         m_Mode: 1
@@ -5967,24 +5993,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1829309397}
   m_CullTransparentMesh: 1
---- !u!114 &1829309403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1829309397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddec50f269f1ee34ea380c5090131686, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TeamDropdown: {fileID: 873332994}
-  RobotId_Input: {fileID: 0}
-  Frequency_Input: {fileID: 0}
-  IP_Input: {fileID: 0}
-  Port_Input: {fileID: 0}
-  Connect_Button: {fileID: 1829309400}
 --- !u!1 &1834779659
 GameObject:
   m_ObjectHideFlags: 0

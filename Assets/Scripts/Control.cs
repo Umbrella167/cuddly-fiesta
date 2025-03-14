@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using static packet;
 
@@ -9,26 +10,29 @@ public class control : MonoBehaviour
     int control_frequency = Connect_Gate.frequency;
     string control_team = Connect_Gate.team;
     public GameObject targetObj;
-    public RadioPacket packet = Connect_Gate.packet;
-    public float globalVx = 0;
-    public float globalVy = 0;
-    public float globalVr = 0;
-    public float power = 0;
+    //static public RadioPacket packet = Connect_Gate.packet;
+    static public RadioPacket[] packet = new RadioPacket[16];
+
+    public float selfVx = 0;
+    public float selfVy = 0;
+    public float selfVr = 0;
+    public float selfPower = 0;
+
+
     // Start is called before the first frame update
 
-    public ConnectHandler handler;
 
     public float maxRotationOutput = 500f; // 最大旋转输出值
     public PIDRotation pid = new PIDRotation();
 
-    void InitConnectHandler()
-    {
-        handler = new ConnectHandler(Connect_Gate.isender);
-    }
 
     void Start()
     {
-        InitConnectHandler();
+        for (int i = 0; i < packet.Length; i++)
+        {
+            packet[i] = new RadioPacket(control_frequency); // 或者使用不同的参数，根据你的需求
+            packet[i].robotID = i;
+        }
 
         pid.P = 3f;
         pid.I = 0.001f;
@@ -45,66 +49,56 @@ public class control : MonoBehaviour
         // Movement controls
         if (Input.GetKey(KeyCode.S))
         {
-            globalVx = 50;
+            selfVx = 50;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            globalVx = -50;
+            selfVx = -50;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            globalVy = -50;
+            selfVy = -50;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            globalVy = 50;
+            selfVy = 50;
         }
-        if (Input.GetKey(KeyCode.Q))
-        {
-            packet.velR = 500;
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            packet.velR = -500;
-        }
+        
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            globalVx = globalVx != 0 ? Math.Sign(globalVx) * 255 : 0;
-            globalVy = globalVy != 0 ? Math.Sign(globalVy) * 255 : 0;
+            selfVx = selfVx != 0 ? Math.Sign(selfVx) * 255 : 0;
+            selfVy = selfVy != 0 ? Math.Sign(selfVy) * 255 : 0;
         }
         if (Input.GetMouseButton(1))
         {
-            packet.ctrl = true;
+            packet[control_robot_id].ctrl = true;
         }
         // Rotation towards targetPos
         
         if (Input.GetMouseButton(0))
         {
-            packet.shootPowerLevel = PowerSet((targetObj.transform.position - robot.transform.position).magnitude);
-            packet.shoot = true;
+            packet[control_robot_id].shootPowerLevel = PowerSet((targetObj.transform.position - robot.transform.position).magnitude);
+            packet[control_robot_id].shoot = true;
         }
-        //Debug.Log(packet.shootPowerLevel);
-        float[] localVelocities = GlobalToLocalVelocity(globalVx, globalVy);
-        packet.velX = localVelocities[0];
-        packet.velY = localVelocities[1];
-        packet.velR = RotateTowardsTarget();
-
-        packet.Encode();
-        handler.Send(packet.transmitPacket);
-        System.Threading.Thread.Sleep(1);
+        float[] localVelocities = GlobalToLocalVelocity(selfVx, selfVy);
+        packet[control_robot_id].velX = localVelocities[0];
+        packet[control_robot_id].velY = localVelocities[1];
+        packet[control_robot_id].velR = RotateTowardsTarget();
+        packet[control_robot_id].Encode();
+        
     }
 
     public void resetPacket()
     {
-        packet.robotID = control_robot_id;
-        packet.frequency = control_frequency;
-        packet.velR = 0;
-        packet.velX = 0;
-        packet.velY = 0;
-        globalVx = 0;
-        globalVy = 0;
-        packet.ctrl = false;
-        packet.shoot = false;
+        packet[control_robot_id].robotID = control_robot_id;
+        packet[control_robot_id].frequency = control_frequency;
+        packet[control_robot_id].velR = 0;
+        packet[control_robot_id].velX = 0;
+        packet[control_robot_id].velY = 0;
+        selfVx = 0;
+        selfVy = 0;
+        packet[control_robot_id].ctrl = false;
+        packet[control_robot_id].shoot = false;
     }
 
     public float[] GlobalToLocalVelocity(float global_vx, float global_vy)
@@ -171,4 +165,19 @@ public class control : MonoBehaviour
     }
 
 
+    static public void send_all_packet_server()
+    {
+
+        for (int i = 0; i < packet.Length; i++)
+        {
+            bool areEqual = packet[i].transmitPacket.SequenceEqual(new byte[Constants.TRANSMIT_PACKET_SIZE]);
+            if (!areEqual)
+            {
+                //Debug.Log($"{packet[i].transmitPacket}");
+                Connect.ser.Write(packet[i].transmitPacket, 0, packet[i].transmitPacket.Length);
+                Connect.ser.BaseStream.Flush();
+                System.Threading.Thread.Sleep(1);
+            }
+        }
+    }
 }

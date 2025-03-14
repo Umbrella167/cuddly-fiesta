@@ -131,7 +131,6 @@ public class Connect : MonoBehaviour
         System.Threading.Thread.Sleep(2000);
         ser.Write(Connect_Gate.packet.start_packet2, 0, Connect_Gate.packet.start_packet2.Length);
         ser.BaseStream.Flush();
-        Connect_Gate.isender = new SerialHandler(ser);
 
         SceneManager.LoadScene("World");
 

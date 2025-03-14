@@ -1,4 +1,5 @@
 using Google.Protobuf;
+using System.Diagnostics;
 public class ProtoBufffer
 {
     public static byte[] Serialize(IMessage message)
@@ -15,6 +16,7 @@ public class ProtoBufffer
         }
         catch (System.Exception e)
         {
+            
             throw;
         }
     }
