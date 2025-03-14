@@ -1,13 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Sockets;
-using UnityEngine.Analytics;
-using static ConnectHandler;
-using System.IO;
 using System;
-using UnityEditor.PackageManager;
-using System.Runtime.InteropServices.ComTypes;
 using System.IO.Ports;
 using static packet;
 
@@ -45,20 +38,20 @@ public class ConnectHandler : MonoBehaviour
 public class SocketHandler : ISender
 {
     private TcpClient _client;
-    //private NetworkStream _stream;
+    private NetworkStream _stream;
     public SocketHandler(TcpClient client)
     {
         _client = client;
-        //_stream = client.GetStream();
+        _stream = client.GetStream();
     }
 
     public void Send(byte[] message)
     {
         try
         {
-            //_stream.Write(message, 0, message.Length);
-            //_stream.Flush();
-            _client.GetStream().Write(message, 0, message.Length);
+            _stream.Write(message, 0, message.Length);
+            _stream.Flush();
+            //_client.GetStream().Write(message, 0, message.Length);
             Debug.Log($"发送了 {message.Length} 字节的数据");
         }
         catch (Exception ex)

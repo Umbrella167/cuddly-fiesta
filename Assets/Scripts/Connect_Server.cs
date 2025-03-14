@@ -1,26 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Net.Sockets;
-using System.IO;
 using TMPro;
 using System;
-using System.Linq;
 using static packet;
-using System.Net;
-using System.Runtime.InteropServices.ComTypes;
-using UnityEditor.VersionControl;
-using System.Text;
+
 
 public class Connect_Server : MonoBehaviour
 {
     public TMP_Dropdown TeamDropdown;
     public TMP_InputField RobotId_Input, Frequency_Input;
     public TextMeshProUGUI SocketStatusText;
-
     public TMP_InputField IP_Input, Port_Input;
+    public Button Connect_Socket_Button;
 
     static public string ipAddress = "127.0.0.1"; // Default IP
     static public int port = 114514; // Default Port
@@ -32,7 +25,8 @@ public class Connect_Server : MonoBehaviour
 
     void Start()
     {
-        GameObject.Find("Connect_Socket_Button").GetComponent<Button>().onClick.AddListener(ButtonOnClickEvent);
+        Connect_Socket_Button.onClick.AddListener(ButtonOnClickEvent);
+        //GameObject.Find("Connect_Socket_Button").GetComponent<Button>().onClick.AddListener(ButtonOnClickEvent);
     }
 
     // 尝试打开Socket连接并返回成功状态

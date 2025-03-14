@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -15,9 +13,10 @@ public class Connect : MonoBehaviour
     public TMP_Dropdown TeamDropdown;
     public TMP_InputField RobotId_Input, Frequency_Input;
     public TextMeshProUGUI SerialStatusText;
-
     public TMP_Dropdown PortDropdown; // 更改为下拉菜单
-    
+    public Button Connect_Button;
+
+
 
     public int baudRate = 115200;
     public Parity parity = Parity.None;
@@ -29,7 +28,8 @@ public class Connect : MonoBehaviour
     void Start()
     {
         PopulatePortDropdown();
-        GameObject.Find("Connect_Button").GetComponent<Button>().onClick.AddListener(ButtonOnClickEvent);
+        Connect_Button.onClick.AddListener(ButtonOnClickEvent);
+        //GameObject.Find("Connect_Button").GetComponent<Button>().onClick.AddListener(ButtonOnClickEvent);
 
     }
 

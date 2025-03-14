@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -172,9 +173,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06b80e8e834ed444b7c39ca46d926f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TeamDropdown: {fileID: 0}
+  RobotId_Input: {fileID: 0}
+  Frequency_Input: {fileID: 0}
+  SocketStatusText: {fileID: 0}
   IP_Input: {fileID: 1200560478}
   Port_Input: {fileID: 769467894}
-  SocketStatusText: {fileID: 0}
+  Connect_Socket_Button: {fileID: 0}
 --- !u!114 &16792745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1930,8 +1935,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c01ae5c5818ce439f9abc4ec56d924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TeamDropdown: {fileID: 873332994}
+  RobotId_Input: {fileID: 583487981}
+  Frequency_Input: {fileID: 1523594536}
   SerialStatusText: {fileID: 948298883}
   PortDropdown: {fileID: 1561398873}
+  Connect_Button: {fileID: 821346340}
   baudRate: 115200
   parity: 0
   dataBits: 8
@@ -5883,9 +5892,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06b80e8e834ed444b7c39ca46d926f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TeamDropdown: {fileID: 873332994}
+  RobotId_Input: {fileID: 583487981}
+  Frequency_Input: {fileID: 1523594536}
+  SocketStatusText: {fileID: 532180200}
   IP_Input: {fileID: 1200560478}
   Port_Input: {fileID: 769467894}
-  SocketStatusText: {fileID: 532180200}
+  Connect_Socket_Button: {fileID: 1829309400}
 --- !u!114 &1829309400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6571,11 +6584,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d1c9d8faf08d34082ab620d670e433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RobotId_Input: {fileID: 0}
-  Frequency_Input: {fileID: 0}
-  ConnectMode: {fileID: 0}
-  Serial_Mode: {fileID: 0}
-  Socket_Mode: {fileID: 0}
+  ConnectMode: {fileID: 203956876}
+  Serial_Mode: {fileID: 1860871298}
+  Socket_Mode: {fileID: 866028615}
 --- !u!1 &2008393566
 GameObject:
   m_ObjectHideFlags: 0

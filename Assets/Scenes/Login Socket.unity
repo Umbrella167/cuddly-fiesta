@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -926,7 +927,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 120
+    m_FontSize: 100
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1
@@ -1720,11 +1721,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06b80e8e834ed444b7c39ca46d926f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IP_Input: {fileID: 1904457825}
   TeamDropdown: {fileID: 519449109}
   RobotId_Input: {fileID: 262791064}
+  Frequency_Input: {fileID: 0}
+  SocketStatusText: {fileID: 0}
+  IP_Input: {fileID: 1904457825}
   Port_Input: {fileID: 1523594536}
-  ConnectionStatusText: {fileID: 1979315366}
+  Connect_Socket_Button: {fileID: 0}
 --- !u!1 &1015299074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,11 +1895,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06b80e8e834ed444b7c39ca46d926f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IP_Input: {fileID: 1904457825}
   TeamDropdown: {fileID: 519449109}
   RobotId_Input: {fileID: 262791064}
+  Frequency_Input: {fileID: 0}
+  SocketStatusText: {fileID: 0}
+  IP_Input: {fileID: 1904457825}
   Port_Input: {fileID: 1523594536}
-  ConnectionStatusText: {fileID: 0}
+  Connect_Socket_Button: {fileID: 0}
 --- !u!1 &1064063000
 GameObject:
   m_ObjectHideFlags: 0
