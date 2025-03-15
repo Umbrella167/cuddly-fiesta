@@ -5,14 +5,18 @@ using System.Net.Sockets;
 using System.Threading;
 using UnityEngine;
 using Google.Protobuf;
+using static packet;
 
 public class MulticastReceiver : MonoBehaviour
 {
 
     private Socket multicastSocket;
+    public SSL_WrapperPacket vision_packet_recive = null;
     public SSL_WrapperPacket vision_packet = null;
+    static public SSL_WrapperPacket[] vision_packet_real = new SSL_WrapperPacket[4];
+
     private const string MCAST_GRP = "224.5.23.2";
-    private const int MCAST_PORT = 10006;
+    private const int MCAST_PORT = 10020;
     private const float SCALE_NUM = 0.01f;
     private const float OUT_OF_SIGHT_Y = -10f; // Y坐标，表示机器人不在视野内
     private const int NUM_ROBOTS = 16; // 每个队伍的机器人数量
@@ -88,11 +92,17 @@ public class MulticastReceiver : MonoBehaviour
 
     void Update()
     {
-        if (vision_packet != null)
+        
+        for(int i = 0; i < 4; i++) 
         {
-            ProcessPacket(vision_packet);
-            vision_packet = null; // 重要：处理完后清空，避免重复处理
+            if (vision_packet_real[i] != null) 
+            {
+                ProcessPacket(vision_packet_real[i]);
+                vision_packet_real[i] = null;
+            }
+        
         }
+
     }
 
     void ReceiveData()
@@ -116,6 +126,7 @@ public class MulticastReceiver : MonoBehaviour
                         lock (this)
                         {
                             vision_packet = newPacket;
+                            vision_packet_real[vision_packet.Detection.CameraId] = newPacket;
                         }
                     }
                     catch (Exception ex)
@@ -137,7 +148,6 @@ public class MulticastReceiver : MonoBehaviour
         
         if (packet.Detection != null)
         {
-
             // 创建HashSet来快速查找当前帧中存在的机器人ID
             HashSet<uint> detectedBlueIds = new HashSet<uint>();
             HashSet<uint> detectedYellowIds = new HashSet<uint>();
@@ -150,6 +160,7 @@ public class MulticastReceiver : MonoBehaviour
             // 处理蓝色机器人
             foreach (var robot_blue in packet.Detection.RobotsBlue)
             {
+
                 uint id = robot_blue.RobotId;
                 detectedBlueIds.Add(id);
                 float x = robot_blue.X * SCALE_NUM;
@@ -160,6 +171,7 @@ public class MulticastReceiver : MonoBehaviour
 
                 if (blueRobots.ContainsKey(obj_name))
                 {
+
                     blueRobots[obj_name].transform.position = new UnityEngine.Vector3(x, 0, y);
                     blueRobots[obj_name].transform.rotation = UnityEngine.Quaternion.Euler(0, dir, 0);
                     blueDisappearanceCounts[obj_name] = 0; // 重置消失计数器
