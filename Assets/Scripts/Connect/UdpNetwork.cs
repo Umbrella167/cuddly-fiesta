@@ -23,18 +23,17 @@ public class UdpNetwork : MonoBehaviour
     private IPEndPoint targetEndPoint;
     private Thread receiveThread;
     private bool isRunning;
-
     public event Action<byte[], string> OnMessageReceived; // (message, sourceIP)
 
     void Start()
     {
         Loom.Initialize(); // 添加这行初始化代码
-        if (Connect_Gate.GAME_MODE == "Serial")
+        if (Connect_Gate.GAME_CONNECT_MODE == "Serial")
         {
             networkMode = Mode.Server;
             InitializeServer();
         }
-        else if (Connect_Gate.GAME_MODE == "Client")
+        else if (Connect_Gate.GAME_CONNECT_MODE == "Client")
         {
             networkMode = Mode.Client;
             InitializeClient();

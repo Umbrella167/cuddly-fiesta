@@ -7,9 +7,10 @@ public class GameMode : MonoBehaviour
 {
     public UdpNetwork network;
     void Start()
-    {
+    {   
+
         network = GetComponent<UdpNetwork>();
-        if (Connect_Gate.GAME_MODE == "Serial")
+        if (Connect_Gate.GAME_CONNECT_MODE == "Serial")
         {
             
             network.networkMode = UdpNetwork.Mode.Server;
@@ -25,7 +26,7 @@ public class GameMode : MonoBehaviour
                 control.packet[num].transmitPacket = message;
             };
         }
-        else if (Connect_Gate.GAME_MODE == "Client") 
+        else if (Connect_Gate.GAME_CONNECT_MODE == "Client") 
         {
             UdpNetwork network = GetComponent<UdpNetwork>();
             network.networkMode = UdpNetwork.Mode.Client;
@@ -44,11 +45,11 @@ public class GameMode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Connect_Gate.GAME_MODE == "Serial") 
+        if (Connect_Gate.GAME_CONNECT_MODE == "Serial") 
         {
             control.send_all_packet_server();
         }
-        else if (Connect_Gate.GAME_MODE == "Client")
+        else if (Connect_Gate.GAME_CONNECT_MODE == "Client")
         {
             network.Send(control.packet[Connect_Gate.robotID].transmitPacket);
             System.Threading.Thread.Sleep(5);
@@ -86,7 +87,6 @@ public class GameMode : MonoBehaviour
                 return bitPos; // real_num = ŒªŒª÷√
             }
         }
-
         return 0;
     }
 }

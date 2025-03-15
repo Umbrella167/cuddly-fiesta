@@ -8,9 +8,11 @@ public class Connect_Gate : MonoBehaviour
 {
     
     public TMP_Dropdown ConnectMode;
+    public TMP_Dropdown GameMode;
     public GameObject Serial_Mode;
     public GameObject Socket_Mode;
-    public static string GAME_MODE;
+    static public string GAME_CONNECT_MODE;
+    static public string GAME_MODE;
     static public int robotID = 0;
     static public int frequency = 0;
     static public int Port;
@@ -21,6 +23,7 @@ public class Connect_Gate : MonoBehaviour
     void Start()
     {
         InitConnectModeDropdown();
+        InitGameModeDropdown();
         UpdateModeVisibility();
     }
 
@@ -29,7 +32,11 @@ public class Connect_Gate : MonoBehaviour
         ConnectMode.ClearOptions();
         ConnectMode.AddOptions(new List<string> { "Serial", "Client" });
     }
-
+    private void InitGameModeDropdown()
+    {
+        GameMode.ClearOptions();
+        GameMode.AddOptions(new List<string> { "Real", "Simulate" });
+    }
     private void Update()
     {
         UpdateModeVisibility();
@@ -39,6 +46,7 @@ public class Connect_Gate : MonoBehaviour
     {
         Serial_Mode.SetActive(ConnectMode.options[ConnectMode.value].text == "Serial");
         Socket_Mode.SetActive(ConnectMode.options[ConnectMode.value].text == "Client");
-        GAME_MODE = ConnectMode.options[ConnectMode.value].text;
+        GAME_CONNECT_MODE = ConnectMode.options[ConnectMode.value].text;
+        GAME_MODE = GameMode.options[GameMode.value].text;
     }
 }

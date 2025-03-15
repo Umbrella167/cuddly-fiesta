@@ -45,7 +45,7 @@ public class packet : MonoBehaviour
             CreateStartPacket(frequency, out this.start_packet1, out this.start_packet2);
         }
 
-        public bool Encode()
+        public bool Encode_Radio()
         {
             Command HU_CMD = new Command();
             HU_CMD.valid = true;
@@ -62,6 +62,32 @@ public class packet : MonoBehaviour
             this.transmitPacket[21] = (byte)(((this.frequency & 0x0F) << 4) | 0x07);
 
             EncodeLegacy(HU_CMD, this.transmitPacket, 0);
+            return true;
+        }
+
+        public bool Encode_grSim() 
+        {
+            var commands = new grSim_Commands
+            {
+                Timestamp = 0,
+                Isteamyellow = Connect_Gate.team == "yellow" ? true : false
+            };
+            var robotCommand = new grSim_Robot_Command
+            {
+                Id = (uint)this.robotID,
+                Kickspeedx = this.shoot ? this.shootPowerLevel / 255 * 6 : 0.0f,
+                Kickspeedz = 0.0f,
+                Veltangent = this.velY / 255 * 4,
+                Velnormal = this.velX / 255 * 4,
+                Velangular = this.velR / 500 * 6,
+                Spinner = this.ctrl,
+                Wheelsspeed = false,
+                Wheel1 = 0.0f,
+                Wheel2 = 0.0f,
+                Wheel3 = 0.0f,
+                Wheel4 = 0.0f
+            };
+
             return true;
         }
 

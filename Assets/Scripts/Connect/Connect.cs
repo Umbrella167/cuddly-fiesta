@@ -7,7 +7,6 @@ using System;
 using System.Linq;
 using static packet;
 
-
 public class Connect : MonoBehaviour
 {
     public TMP_Dropdown TeamDropdown;
@@ -15,8 +14,6 @@ public class Connect : MonoBehaviour
     public TextMeshProUGUI SerialStatusText;
     public TMP_Dropdown PortDropdown; // 更改为下拉菜单
     public Button Connect_Button;
-
-
 
     public int baudRate = 115200;
     public Parity parity = Parity.None;

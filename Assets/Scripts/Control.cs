@@ -84,7 +84,7 @@ public class control : MonoBehaviour
         packet[control_robot_id].velX = localVelocities[0];
         packet[control_robot_id].velY = localVelocities[1];
         packet[control_robot_id].velR = RotateTowardsTarget();
-        packet[control_robot_id].Encode();
+        packet[control_robot_id].Encode_Radio();
         
     }
 
