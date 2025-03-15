@@ -18,10 +18,6 @@ public class control : MonoBehaviour
     public float selfVr = 0;
     public float selfPower = 0;
 
-
-    // Start is called before the first frame update
-
-
     public float maxRotationOutput = 500f; // 最大旋转输出值
     public PIDRotation pid = new PIDRotation();
 
@@ -63,7 +59,6 @@ public class control : MonoBehaviour
         {
             selfVy = 50;
         }
-        
         if (Input.GetKey(KeyCode.LeftShift))
         {
             selfVx = selfVx != 0 ? Math.Sign(selfVx) * 255 : 0;
@@ -83,11 +78,10 @@ public class control : MonoBehaviour
         float[] localVelocities = GlobalToLocalVelocity(selfVx, selfVy);
         packet[control_robot_id].velX = localVelocities[0];
         packet[control_robot_id].velY = localVelocities[1];
-        packet[control_robot_id].velR = RotateTowardsTarget();
+        packet[control_robot_id].velR = RotateTowardsTarget(targetObj.transform.position);
         packet[control_robot_id].Encode();
         
     }
-
     public void resetPacket()
     {
         packet[control_robot_id].robotID = control_robot_id;
@@ -111,11 +105,11 @@ public class control : MonoBehaviour
         return new float[] { local_vx, local_vy };
     }
 
-    float RotateTowardsTarget()
+    float RotateTowardsTarget(UnityEngine.Vector3 target_pos)
     {
         if (targetObj == null || robot == null) return 0;
 
-        Vector3 toTarget = robot.transform.position - targetObj.transform.position; // 注意：目标 - 机器人
+        Vector3 toTarget = robot.transform.position - target_pos; // 注意：目标 - 机器人
         toTarget.y = 0;
 
         if (toTarget.sqrMagnitude < 0.001f) return 0;
@@ -177,6 +171,7 @@ public class control : MonoBehaviour
                 Connect.ser.Write(packet[i].transmitPacket, 0, packet[i].transmitPacket.Length);
                 Connect.ser.BaseStream.Flush();
                 System.Threading.Thread.Sleep(1);
+                packet[i].transmitPacket = new byte[Constants.TRANSMIT_PACKET_SIZE];
             }
         }
     }

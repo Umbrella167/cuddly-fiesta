@@ -16,7 +16,7 @@ public class UdpNetwork : MonoBehaviour
     public int serverPort = 16701;
 
     // Client settings
-    public string serverIP = "127.0.0.1";
+    public string serverIP = "172.20.64.232";
     public int clientTargetPort = 16701;
 
     private UdpClient udpClient;
@@ -28,6 +28,9 @@ public class UdpNetwork : MonoBehaviour
 
     void Start()
     {
+        serverIP = Connect_Gate.IP;
+        clientTargetPort = Connect_Gate.Port;
+
         Loom.Initialize(); // 添加这行初始化代码
         if (Connect_Gate.GAME_MODE == "Serial")
         {
@@ -51,7 +54,8 @@ public class UdpNetwork : MonoBehaviour
 
     private void InitializeServer()
     {
-        udpClient = new UdpClient(serverPort);
+        // Bind to 0.0.0.0 to listen on all interfaces
+        udpClient = new UdpClient(new IPEndPoint(IPAddress.Parse("0.0.0.0"), serverPort));
         isRunning = true;
         receiveThread = new Thread(ServerReceive);
         receiveThread.Start();
@@ -59,8 +63,12 @@ public class UdpNetwork : MonoBehaviour
 
     private void InitializeClient()
     {
-        udpClient = new UdpClient();
+        udpClient = new UdpClient(0);
+        //udpClient.EnableBroadcast = true; // 如果需要广播可开启
+        Debug.Log($"Sent {serverIP} bytes to {clientTargetPort}");
+
         targetEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), clientTargetPort);
+        Debug.Log($"Sent {serverIP} bytes to {clientTargetPort}");
     }
 
     private void ServerReceive()
@@ -97,6 +105,7 @@ public class UdpNetwork : MonoBehaviour
         try
         {
             udpClient.Send(message, message.Length, targetEndPoint);
+            //Debug.Log($"Sent {message.Length} bytes to {targetEndPoint}");
         }
         catch (Exception e)
         {

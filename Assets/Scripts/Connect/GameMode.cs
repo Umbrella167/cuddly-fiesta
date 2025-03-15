@@ -23,6 +23,7 @@ public class GameMode : MonoBehaviour
             {
                 int num = ReverseRealNum(message[1], message[2]);
                 control.packet[num].transmitPacket = message;
+                Debug.Log($"{num}");
             };
         }
         else if (Connect_Gate.GAME_MODE == "Client") 
@@ -51,7 +52,7 @@ public class GameMode : MonoBehaviour
         else if (Connect_Gate.GAME_MODE == "Client")
         {
             network.Send(control.packet[Connect_Gate.robotID].transmitPacket);
-            System.Threading.Thread.Sleep(5);
+            System.Threading.Thread.Sleep(3);
         }
     }
 
