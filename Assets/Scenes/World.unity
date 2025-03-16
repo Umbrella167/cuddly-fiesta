@@ -965,12 +965,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObj: {fileID: 151465587}
-  globalVx: 0
-  globalVy: 0
-  globalVr: 0
-  power: 0
-  handler: {fileID: 0}
+  selfVx: 0
+  selfVy: 0
+  selfVr: 0
+  selfPower: 0
   maxRotationOutput: 500
+  Ctrl_Sim: {fileID: 0}
 --- !u!4 &560081383 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7136620318599284343, guid: 4d9a909f33e00c940aa9d9c96eb88c6f, type: 3}
@@ -993,7 +993,7 @@ GameObject:
   - component: {fileID: 674503359}
   - component: {fileID: 674503361}
   m_Layer: 0
-  m_Name: UdpNetwork
+  m_Name: PacketSender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1042,6 +1042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c2d98a5090cd345a636a28def822db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  network: {fileID: 0}
 --- !u!4 &687363580 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7136620318599284343, guid: 4d9a909f33e00c940aa9d9c96eb88c6f, type: 3}
@@ -2244,6 +2245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1532459350}
   - component: {fileID: 1532459351}
+  - component: {fileID: 1532459352}
   m_Layer: 0
   m_Name: Vision
   m_TagString: Untagged
@@ -2279,6 +2281,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball_obj: {fileID: 1035091050}
+--- !u!114 &1532459352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532459349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6275d785ee418bc438382ce8d858054f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1534328653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2680,6 +2694,56 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7136620318599284343, guid: 4d9a909f33e00c940aa9d9c96eb88c6f, type: 3}
   m_PrefabInstance: {fileID: 931314155}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1848333136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1848333137}
+  - component: {fileID: 1848333138}
+  m_Layer: 0
+  m_Name: Control_Sim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1848333137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848333136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -41.947186, y: -126.5405, z: -6.00897}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1848333138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848333136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5fc379b397d91d4dbe02d7055f44f96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObj: {fileID: 0}
+  selfVx: 0
+  selfVy: 0
+  selfVr: 0
+  selfPower: 0
+  maxRotationOutput: 500
 --- !u!4 &1853589642 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7136620318599284343, guid: 49dcd51b9a5d75141a2071e1760daade, type: 3}
@@ -3374,3 +3438,4 @@ SceneRoots:
   - {fileID: 151465589}
   - {fileID: 123051545}
   - {fileID: 674503360}
+  - {fileID: 1848333137}

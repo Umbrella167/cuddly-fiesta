@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using System;
+using static Packet;
+using System.Linq;
 
-public class GameMode : MonoBehaviour
+public class PacketSender : MonoBehaviour
 {
     public UdpNetwork network;
     void Start()
@@ -23,7 +26,7 @@ public class GameMode : MonoBehaviour
             network.OnMessageReceived += (message, ip) =>
             {
                 int num = ReverseRealNum(message[1], message[2]);
-                control.packet[num].transmitPacket = message;
+                Control.packet[num].transmitPacket = message;
                 Debug.Log($"{num}");
             };
         }
@@ -48,15 +51,30 @@ public class GameMode : MonoBehaviour
     {
         if (Connect_Gate.GAME_CONNECT_MODE == "Serial") 
         {
-            control.send_all_packet_server();
+            send_all_packet_server();
         }
         else if (Connect_Gate.GAME_CONNECT_MODE == "Client")
         {
-            network.Send(control.packet[Connect_Gate.robotID].transmitPacket);
+            network.Send(Control.packet[Connect_Gate.robotID].transmitPacket);
             System.Threading.Thread.Sleep(3);
         }
     }
+    static public void send_all_packet_server()
+    {
 
+        for (int i = 0; i < Control.packet.Length; i++)
+        {
+            bool areEqual = Control.packet[i].transmitPacket.SequenceEqual(new byte[Constants.TRANSMIT_PACKET_SIZE]);
+            if (!areEqual)
+            {
+                //Debug.Log($"{packet[i].transmitPacket}");
+                Connect.ser.Write(Control.packet[i].transmitPacket, 0, Control.packet[i].transmitPacket.Length);
+                Connect.ser.BaseStream.Flush();
+                System.Threading.Thread.Sleep(1);
+                Control.packet[i].transmitPacket = new byte[Constants.TRANSMIT_PACKET_SIZE];
+            }
+        }
+    }
     public static int ReverseRealNum(byte txbuff1, byte txbuff2)
     {
         // 检查 TXBuff[1] 是否有置位

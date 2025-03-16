@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static packet;
+using static Packet;
 
 public class Connect_Gate : MonoBehaviour
 {
@@ -47,6 +47,8 @@ public class Connect_Gate : MonoBehaviour
         Serial_Mode.SetActive(ConnectMode.options[ConnectMode.value].text == "Serial");
         Socket_Mode.SetActive(ConnectMode.options[ConnectMode.value].text == "Client");
         GAME_CONNECT_MODE = ConnectMode.options[ConnectMode.value].text;
+        Param.GAME_CONNECT_MODE = ConnectMode.options[ConnectMode.value].text;
         GAME_MODE = GameMode.options[GameMode.value].text;
+        Param.GAME_MODE = GameMode.options[GameMode.value].text;
     }
 }

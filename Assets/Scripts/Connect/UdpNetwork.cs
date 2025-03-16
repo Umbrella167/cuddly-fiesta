@@ -41,14 +41,7 @@ public class UdpNetwork : MonoBehaviour
             networkMode = Mode.Client;
             InitializeClient();
         }
-        //if (networkMode == Mode.Server)
-        //{
-        //    InitializeServer();
-        //}
-        //else
-        //{
-        //    InitializeClient();
-        //}
+
     }
 
     private void InitializeServer()

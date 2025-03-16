@@ -1,8 +1,11 @@
+using Google.Protobuf;
 using System;
+using System.Drawing.Imaging;
+using TMPro;
 using UnityEngine;
 using static ccrc;
 
-public class packet : MonoBehaviour
+public class Packet : MonoBehaviour
 {
     public class Constants
     {
@@ -24,6 +27,7 @@ public class packet : MonoBehaviour
 
     public class RadioPacket
     {
+        public TMP_Dropdown gameMode_obj;
         public int robotID = 0;
         public float velX = 0.0f;
         public float velY = 0.0f;
@@ -45,7 +49,7 @@ public class packet : MonoBehaviour
             CreateStartPacket(frequency, out this.start_packet1, out this.start_packet2);
         }
 
-        public bool Encode_Radio()
+        public byte[] Encode_Radio()
         {
             Command HU_CMD = new Command();
             HU_CMD.valid = true;
@@ -62,11 +66,13 @@ public class packet : MonoBehaviour
             this.transmitPacket[21] = (byte)(((this.frequency & 0x0F) << 4) | 0x07);
 
             EncodeLegacy(HU_CMD, this.transmitPacket, 0);
-            return true;
+            return this.transmitPacket;
         }
 
-        public bool Encode_grSim() 
+        public byte[] Encode_grSim() 
         {
+            grSim_Packet grSimPacket = new grSim_Packet();
+
             var commands = new grSim_Commands
             {
                 Timestamp = 0,
@@ -79,7 +85,7 @@ public class packet : MonoBehaviour
                 Kickspeedz = 0.0f,
                 Veltangent = this.velY / 255 * 4,
                 Velnormal = this.velX / 255 * 4,
-                Velangular = this.velR / 500 * 6,
+                Velangular = this.velR / 500 * 8.5f,
                 Spinner = this.ctrl,
                 Wheelsspeed = false,
                 Wheel1 = 0.0f,
@@ -87,10 +93,40 @@ public class packet : MonoBehaviour
                 Wheel3 = 0.0f,
                 Wheel4 = 0.0f
             };
+            commands.RobotCommands.Add(robotCommand);
+            grSimPacket.Commands = commands;
 
-            return true;
+
+            return grSimPacket.ToByteArray();
         }
 
+        public void resetPacket(int roobot_id,int frequency)
+        {
+            this.robotID = roobot_id;
+            this.frequency = frequency; 
+            this.velX = 0.0f;
+            this.velY = 0.0f;
+            this.velR = 0.0f;
+            this.ctrl = false;
+            this.shoot = false;
+            this.shootPowerLevel = 0;
+
+        }
+
+        public void Encode() 
+        {
+
+            string game_mode = Connect_Gate.GAME_MODE;
+            if (game_mode == Param.REAL)
+            {
+                Encode_Radio();
+            }
+            else if (game_mode == Param.SIMULATE) 
+            {
+                this.transmitPacket = Encode_grSim();
+            }
+        
+        }
         private void EncodeLegacy(Command command, byte[] TXBuff, int num)
         {
             int real_num = command.id;

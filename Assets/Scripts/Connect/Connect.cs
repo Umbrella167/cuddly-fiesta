@@ -5,7 +5,7 @@ using System.IO.Ports;
 using TMPro;
 using System;
 using System.Linq;
-using static packet;
+using static Packet;
 
 public class Connect : MonoBehaviour
 {

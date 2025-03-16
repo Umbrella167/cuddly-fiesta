@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UI;
 using UnityEngine;
-using static packet;
+using static Packet;
 
 public class Control_User : MonoBehaviour
 {
