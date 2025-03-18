@@ -29,7 +29,7 @@ public class Control : MonoBehaviour
         }
         else if (game_mode == Param.REAL)
         {
-
+            packet = Control_Real.packet;
         }
     }
 

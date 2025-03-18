@@ -16,7 +16,7 @@ public class MulticastReceiver : MonoBehaviour
     static public SSL_WrapperPacket[] vision_packet_real = new SSL_WrapperPacket[4];
 
     private const string MCAST_GRP = "224.5.23.2";
-    private const int MCAST_PORT = 10020;
+    private const int MCAST_PORT = 10006;
     private const float SCALE_NUM = 0.01f;
     private const int NUM_ROBOTS = 16; // 每个队伍的机器人数量
     private const int DISAPPEARANCE_THRESHOLD = 20; // 消失次数阈值
@@ -194,9 +194,10 @@ public class MulticastReceiver : MonoBehaviour
 
                 if (yellowRobots.ContainsKey(obj_name))
                 {
-                    yellowRobots[obj_name].transform.position = new UnityEngine.Vector3(x, 0, y);
+                    yellowRobots[obj_name].transform.position = new UnityEngine.Vector3(x, Param.ROBOT_Z, y);
                     yellowRobots[obj_name].transform.rotation = UnityEngine.Quaternion.Euler(0, dir, 0);
                     //Debug.Log($"{dir}");
+                    
                     yellowDisappearanceCounts[obj_name] = 0; // 重置消失计数器
                 }
                 else

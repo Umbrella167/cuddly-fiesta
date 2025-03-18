@@ -5,29 +5,26 @@ using UnityEngine;
 public class Control_Utils : MonoBehaviour
 {
 
-    static public float RotateTowardsTarget(GameObject robot, UnityEngine.Vector3 target_pos,PIDRotation pid ,float maxRotationOutput = 500)
+    static public float RotateTowardsTarget(GameObject robot, UnityEngine.Vector3 target_pos,PIDRotation pid ,string game_mode,float maxRotationOutput = 500)
     {
-
-
-        Vector3 toTarget = -(robot.transform.position - target_pos); 
+        Vector3 toTarget = game_mode == Param.SIMULATE ? - (robot.transform.position - target_pos): robot.transform.position - target_pos; 
         toTarget.y = 0;
         if (toTarget.sqrMagnitude < 0.001f) return 0;
         toTarget.Normalize();
-        Vector3 robotForward = robot.transform.rotation * Vector3.back;
 
+        Vector3 robotForward = game_mode == Param.SIMULATE?robot.transform.rotation * Vector3.back: robot.transform.forward;
         robotForward.Normalize();
 
         float angleDiff = Vector3.SignedAngle(robotForward, toTarget, Vector3.up);
-        angleDiff = -1* angleDiff;
+        angleDiff = game_mode == Param.SIMULATE ?-1* angleDiff: angleDiff;
         float rotationOutput = pid.Compute(angleDiff, Time.deltaTime);
 
         rotationOutput = Mathf.Clamp(rotationOutput, -maxRotationOutput, maxRotationOutput);
 
-        robotForward = robot.transform.forward;
+        robotForward = game_mode == Param.SIMULATE ? robot.transform.rotation * Vector3.back : robot.transform.forward;
         robotForward.Normalize();
         angleDiff = Vector3.SignedAngle(robotForward, toTarget, Vector3.up);
         if (Mathf.Abs(angleDiff) < 0.5f) return 0;
-
         return rotationOutput;
     }
 
@@ -41,7 +38,7 @@ public class Control_Utils : MonoBehaviour
         // 6. 返回局部速度数组
         return new float[] { local_vx, local_vy };
     }
-
+     
     static public float PowerSet(float dist, float rate = 0.05f, float min = 5, float max = 150)
     {
 

@@ -10,6 +10,7 @@ public class Control_Sim : MonoBehaviour
     static int control_frequency = Connect_Gate.frequency;
     static string control_team = Connect_Gate.team;
     static public GameObject targetObj;
+    static public GameObject nearMouseObj;
     static public float selfVx = 0;
     static public float selfVy = 0;
     static public float selfVr = 0;
@@ -19,14 +20,16 @@ public class Control_Sim : MonoBehaviour
     static public RadioPacket[] packet = new RadioPacket[16];
     public void Awake()
     {
+        if (Param.GAME_MODE != Param.SIMULATE) return;
+
         for (int i = 0; i < packet.Length; i++)
         {
             packet[i] = new RadioPacket(control_frequency); // 或者使用不同的参数，根据你的需求
             packet[i].robotID = i;
         }
-        pid.P = 3.5f;
+        pid.P = 5.5f;
         pid.I = 0.03f;
-        pid.D = 0.1f;
+        pid.D = 0.5f;
         System.Threading.Thread.Sleep(1000);
         targetObj = Vision.mouseObj;
     }
@@ -34,19 +37,15 @@ public class Control_Sim : MonoBehaviour
     // Update is called once per frame
      public void Update()
     {
-        if (Param.GAME_MODE == Param.SIMULATE) 
-        {
-            resetPacket();
-            ProcessInput();
-            packet[control_robot_id].velR = Control_Utils.RotateTowardsTarget(Vision.selfRobot, targetObj.transform.position, pid);
-        }
-
+        if (Param.GAME_MODE != Param.SIMULATE) return;
+        resetPacket();
+        ProcessInput();
+        packet[control_robot_id].velR = Control_Utils.RotateTowardsTarget(Vision.selfRobot, targetObj.transform.position, pid,Param.SIMULATE);
 
     }
     public void ProcessInput()
     {
 
-        // Movement controls
         if (Input.GetKey(KeyCode.D))
         {
             selfVx = 50;
@@ -76,6 +75,13 @@ public class Control_Sim : MonoBehaviour
         {
             packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
             packet[control_robot_id].shoot = true;
+        }
+
+        if (Input.GetMouseButton(2)) 
+        {
+            nearMouseObj = Vision.FindNearestObjectInRange(Vision.mouseObj.transform.position, 1.5f);
+            nearMouseObj = nearMouseObj == null ? Vision.mouseObj : nearMouseObj;
+            targetObj = nearMouseObj;
         }
         packet[control_robot_id].velX = selfVx;
         packet[control_robot_id].velY = selfVy;

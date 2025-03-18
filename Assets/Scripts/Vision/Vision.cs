@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Vision : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     static public GameObject selfRobot = null;
     static public GameObject ball = null;
 
@@ -24,6 +25,37 @@ public class Vision : MonoBehaviour
             enemy[i] = GameObject.Find(enemy_team + "_robot" + i.ToString());
         }
     }
+
+    static public GameObject FindNearestObjectInRange(Vector3 position, float radius)
+    {
+        GameObject gameObject = null;
+        int nearestId = -1;
+        float nearestDistance = Mathf.Infinity;
+        float distance;
+        for (int i = 0;i < Param.MAX_PLAYER; i++) 
+        {
+            if (player[i].transform.position.y == Param.OUT_OF_SIGHT_Y) continue;
+            distance = Vector3.Distance(position, player[i].transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestId = i;
+            }
+        }
+        distance = Vector3.Distance(position, ball.transform.position);
+        if (distance < nearestDistance && nearestDistance < radius)
+        {
+            return ball;
+        }
+        if (nearestDistance < radius) 
+        {
+            gameObject = player[nearestId];
+        }
+        return gameObject;
+    }
+
+
+
 
     static public bool isValid(int num,string enemy_or_player = "player")
     {

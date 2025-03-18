@@ -211,7 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 77087396}
   - component: {fileID: 77087395}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -546,7 +546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 151465589}
   - component: {fileID: 151465588}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -920,57 +920,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d9a909f33e00c940aa9d9c96eb88c6f, type: 3}
---- !u!1 &552124352
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 552124354}
-  - component: {fileID: 552124355}
-  m_Layer: 0
-  m_Name: Control
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &552124354
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 552124352}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9638793, y: -59.72445, z: 44.75626}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &552124355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 552124352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1de7b49e7886923469d00aafbcedcc56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetObj: {fileID: 151465587}
-  selfVx: 0
-  selfVy: 0
-  selfVr: 0
-  selfPower: 0
-  maxRotationOutput: 500
-  Ctrl_Sim: {fileID: 0}
 --- !u!4 &560081383 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7136620318599284343, guid: 4d9a909f33e00c940aa9d9c96eb88c6f, type: 3}
@@ -992,7 +941,7 @@ GameObject:
   - component: {fileID: 674503360}
   - component: {fileID: 674503359}
   - component: {fileID: 674503361}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PacketSender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1688,7 +1637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1138117354}
   - component: {fileID: 1138117353}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: boundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2246,7 +2195,7 @@ GameObject:
   - component: {fileID: 1532459350}
   - component: {fileID: 1532459351}
   - component: {fileID: 1532459352}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Vision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2361,7 +2310,7 @@ GameObject:
   - component: {fileID: 1559198847}
   - component: {fileID: 1559198846}
   - component: {fileID: 1559198845}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2704,8 +2653,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1848333137}
   - component: {fileID: 1848333138}
-  m_Layer: 0
-  m_Name: Control_Sim
+  - component: {fileID: 1848333140}
+  - component: {fileID: 1848333139}
+  m_Layer: 7
+  m_Name: Control
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2738,12 +2689,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5fc379b397d91d4dbe02d7055f44f96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObj: {fileID: 0}
+--- !u!114 &1848333139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848333136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de7b49e7886923469d00aafbcedcc56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObj: {fileID: 151465587}
   selfVx: 0
   selfVy: 0
   selfVr: 0
   selfPower: 0
-  maxRotationOutput: 500
+  maxRotationOutput: 600
+--- !u!114 &1848333140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848333136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93691167e840dbd49bf04042eef08768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1853589642 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7136620318599284343, guid: 49dcd51b9a5d75141a2071e1760daade, type: 3}
@@ -3430,7 +3405,6 @@ SceneRoots:
   - {fileID: 449732068}
   - {fileID: 1899619486}
   - {fileID: 1758647826}
-  - {fileID: 552124354}
   - {fileID: 77087396}
   - {fileID: 1215924317}
   - {fileID: 1559198847}

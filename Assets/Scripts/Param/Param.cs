@@ -6,9 +6,9 @@ public class Param : MonoBehaviour
 {
     static public string GAME_MODE;
     static public string GAME_CONNECT_MODE;
+    
 
-
-
+    static public int ROBOT_Z = 0;
     static public int MAX_PLAYER = 16;
     static public string BLUE = "blue";
     static public string YELLOW = "yellow";
