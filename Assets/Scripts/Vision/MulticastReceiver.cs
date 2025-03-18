@@ -16,7 +16,8 @@ public class MulticastReceiver : MonoBehaviour
     static public SSL_WrapperPacket[] vision_packet_real = new SSL_WrapperPacket[4];
 
     private const string MCAST_GRP = "224.5.23.2";
-    private const int MCAST_PORT = 10006;
+    //private const int MCAST_PORT = 10006;
+    private const int MCAST_PORT = 10020;
     private const float SCALE_NUM = 0.01f;
     private const int NUM_ROBOTS = 16; // 每个队伍的机器人数量
     private const int DISAPPEARANCE_THRESHOLD = 20; // 消失次数阈值

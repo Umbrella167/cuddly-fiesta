@@ -28,30 +28,31 @@ public class Vision : MonoBehaviour
 
     static public GameObject FindNearestObjectInRange(Vector3 position, float radius)
     {
-        GameObject gameObject = null;
-        int nearestId = -1;
-        float nearestDistance = Mathf.Infinity;
-        float distance;
-        for (int i = 0;i < Param.MAX_PLAYER; i++) 
+        GameObject nearestObject = null;
+        float nearestDistance = radius; // Initialize to radius, so anything outside is immediately rejected
+
+        // Check players
+        for (int i = 0; i < Param.MAX_PLAYER; i++)
         {
             if (player[i].transform.position.y == Param.OUT_OF_SIGHT_Y) continue;
-            distance = Vector3.Distance(position, player[i].transform.position);
+
+            float distance = Vector3.Distance(position, player[i].transform.position);
+
             if (distance < nearestDistance)
             {
                 nearestDistance = distance;
-                nearestId = i;
+                nearestObject = player[i];
             }
         }
-        distance = Vector3.Distance(position, ball.transform.position);
-        if (distance < nearestDistance && nearestDistance < radius)
+
+        // Check ball
+        float ballDistance = Vector3.Distance(position, ball.transform.position);
+        if (ballDistance < nearestDistance)
         {
-            return ball;
+            nearestObject = ball;
         }
-        if (nearestDistance < radius) 
-        {
-            gameObject = player[nearestId];
-        }
-        return gameObject;
+
+        return nearestObject;
     }
 
 

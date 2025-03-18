@@ -36,7 +36,7 @@ public class Control : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float[] localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot,packet[control_robot_id].velX, packet[control_robot_id].velY);
+        float[] localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot,packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
         packet[control_robot_id].velX = localVelocities[0];
         packet[control_robot_id].velY = localVelocities[1];
         packet[control_robot_id].Encode();

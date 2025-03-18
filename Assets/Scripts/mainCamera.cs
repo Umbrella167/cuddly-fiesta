@@ -12,7 +12,7 @@ public class mainCamera : MonoBehaviour
     {
         robot = GameObject.Find(Connect_Gate.team + "_robot" + Connect_Gate.robotID.ToString());
         //robot = GameObject.Find("yellow_robot8");
-        
+
     }
 
     // Update is called once per frame
@@ -27,10 +27,12 @@ public class mainCamera : MonoBehaviour
         {
             MouseImage.transform.position = new Vector3(hit.point.x, 0.06f, hit.point.z);
         }
-        
+
         PowerRageBoundary.transform.position = robot.transform.position;
 
         Vector3 playerPos = robot.transform.position;
-        //transform.position = Vector3.Lerp(transform.position, playerPos + Vector3.back * 25 + Vector3.up * 30f - Vector3.left * 3.8f, 1000f * Time.deltaTime);
+        float speed = Vector3.Distance(transform.position, playerPos) > Param.CAMERA_SLOW_DISTANCE ? 5f * Time.deltaTime : 1.2f * Time.deltaTime;
+        //transform.position = Vector3.Lerp(transform.position, new Vector3(playerPos.x, transform.position.y, playerPos.z), speed);
+
     }
 }

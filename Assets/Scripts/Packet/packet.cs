@@ -32,6 +32,7 @@ public class Packet : MonoBehaviour
         public float velX = 0.0f;
         public float velY = 0.0f;
         public float velR = 0.0f;
+        public bool useGlobleVel = true;
         public bool ctrl = false;
         public float ctrlPowerLevel = 3.0f;
         public bool shoot = false;
@@ -110,6 +111,7 @@ public class Packet : MonoBehaviour
             this.ctrl = false;
             this.shoot = false;
             this.shootPowerLevel = 0;
+            this.useGlobleVel = true;
 
         }
 
