@@ -15,9 +15,8 @@ public class MulticastReceiver : MonoBehaviour
     public SSL_WrapperPacket vision_packet = null;
     static public SSL_WrapperPacket[] vision_packet_real = new SSL_WrapperPacket[4];
 
-    private const string MCAST_GRP = "224.5.23.2";
-    //private const int MCAST_PORT = 10006;
-    private const int MCAST_PORT = 10020;
+    public string MCAST_GRP =  Param.MCAST_GRP;
+    public  int MCAST_PORT = Connect_Gate.GAME_MODE == Param.REAL ? Param.MCAST_PORT_REAL: Param.MCAST_PORT_SIM;
     private const float SCALE_NUM = 0.01f;
     private const int NUM_ROBOTS = 16; // 每个队伍的机器人数量
     private const int DISAPPEARANCE_THRESHOLD = 20; // 消失次数阈值
@@ -245,7 +244,7 @@ public class MulticastReceiver : MonoBehaviour
         // 处理几何数据
         if (packet.Geometry != null)
         {
-            //Debug.Log(packet.Geometry);
+            Debug.Log(packet.Geometry);
             // 在这里处理Geometry数据
         }
     }

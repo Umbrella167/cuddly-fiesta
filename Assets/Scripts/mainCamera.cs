@@ -32,7 +32,7 @@ public class mainCamera : MonoBehaviour
 
         Vector3 playerPos = robot.transform.position;
         float speed = Vector3.Distance(transform.position, playerPos) > Param.CAMERA_SLOW_DISTANCE ? 5f * Time.deltaTime : 1.2f * Time.deltaTime;
-        //transform.position = Vector3.Lerp(transform.position, new Vector3(playerPos.x, transform.position.y, playerPos.z), speed);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(playerPos.x, transform.position.y, playerPos.z), speed);
 
     }
 }
