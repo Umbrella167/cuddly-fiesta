@@ -5,6 +5,7 @@ public class mainCamera : MonoBehaviour
     public LayerMask ignoreLayer;
     public GameObject MouseImage;
     public GameObject PowerRageBoundary;
+
     public Camera cam;
     GameObject robot;
     // Start is called before the first frame update
@@ -27,10 +28,13 @@ public class mainCamera : MonoBehaviour
         {
             MouseImage.transform.position = new Vector3(hit.point.x, 0.06f, hit.point.z);
         }
-
-        PowerRageBoundary.transform.position = robot.transform.position;
-
         Vector3 playerPos = robot.transform.position;
+
+        if (Vector3.Distance(Vision.ball.transform.position, playerPos) > 0.95) 
+        {
+            PowerRageBoundary.transform.position = robot.transform.position;
+        }
+
         float speed = Vector3.Distance(transform.position, playerPos) > Param.CAMERA_SLOW_DISTANCE ? 5f * Time.deltaTime : 1.2f * Time.deltaTime;
         transform.position = Vector3.Lerp(transform.position, new Vector3(playerPos.x, transform.position.y, playerPos.z), speed);
 
