@@ -30,7 +30,7 @@ public class mainCamera : MonoBehaviour
         }
         Vector3 playerPos = robot.transform.position;
 
-        if (Vector3.Distance(Vision.ball.transform.position, playerPos) > 0.95) 
+        if (Vector3.Distance(Vision.ball.transform.position, playerPos) > 2.1) 
         {
             PowerRageBoundary.transform.position = robot.transform.position;
         }
