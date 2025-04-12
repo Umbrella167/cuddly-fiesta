@@ -31,19 +31,19 @@ public class Vision : MonoBehaviour
         GameObject nearestObject = null;
         float nearestDistance = radius; // Initialize to radius, so anything outside is immediately rejected
 
-        // Check players
-        for (int i = 0; i < Param.MAX_PLAYER; i++)
-        {
-            if (player[i].transform.position.y == Param.OUT_OF_SIGHT_Y) continue;
+        //// Check players
+        //for (int i = 0; i < Param.MAX_PLAYER; i++)
+        //{
+        //    if (player[i].transform.position.y == Param.OUT_OF_SIGHT_Y) continue;
 
-            float distance = Vector3.Distance(position, player[i].transform.position);
+        //    float distance = Vector3.Distance(position, player[i].transform.position);
 
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;
-                nearestObject = player[i];
-            }
-        }
+        //    if (distance < nearestDistance)
+        //    {
+        //        nearestDistance = distance;
+        //        nearestObject = player[i];
+        //    }
+        //}
 
         // Check ball
         float ballDistance = Vector3.Distance(position, ball.transform.position);

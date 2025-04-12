@@ -8,6 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Control_Sim : MonoBehaviour
 {
+    public GameObject PowerRageBoundary;
     static public float targetVx = 0;
     static public float targetVy = 0;
     static public float acceleration = 80f;   // 加速度（单位/秒²）
@@ -26,6 +27,9 @@ public class Control_Sim : MonoBehaviour
     static public PIDRotation pid = new PIDRotation();
     static public RadioPacket[] packet = new RadioPacket[16];
     RuntimeLineRenderer line;
+
+
+    
     public void Awake()
     {
         if (Param.GAME_MODE != Param.SIMULATE) return;
@@ -50,6 +54,8 @@ public class Control_Sim : MonoBehaviour
         if (Param.GAME_MODE != Param.SIMULATE) return;
         resetPacket();
         ProcessInput();
+        autoShoot();
+        auto_unlock_ball();
 
         float deltaTime = Time.deltaTime;
         UpdateVelocity(ref selfVx, targetVx, deltaTime);
@@ -57,11 +63,21 @@ public class Control_Sim : MonoBehaviour
 
         line.UpdateExtendedLineWithAngle(Vision.selfRobot.transform.position + Vector3.up * 0.01f, Vision.selfRobot.transform.eulerAngles.y, 20f);
         packet[control_robot_id].velR = Control_Utils.RotateTowardsTarget(Vision.selfRobot, targetObj.transform.position, pid,Param.SIMULATE);
-        
         packet[control_robot_id].velX = selfVx;
         packet[control_robot_id].velY = selfVy;
 
     }
+
+    public void auto_unlock_ball() 
+    {
+        if (Vector3.Distance(Vision.ball.transform.position, Vision.selfRobot.transform.position) <= Param.DRIBBLE_BALL_DISTANCE) 
+        {
+            targetObj = Vision.mouseObj;
+        }
+
+    }
+
+    
     private void UpdateVelocity(ref float current, float target, float deltaTime)
     {
         if (Mathf.Approximately(target, 0))
@@ -85,7 +101,17 @@ public class Control_Sim : MonoBehaviour
             }
         }
     }
+    public void autoShoot() 
+    {
+        float distance = Vector3.Distance(Vision.ball.transform.position, PowerRageBoundary.transform.position);
+        if (distance > 8.2)
+        {
+            packet[control_robot_id].shootMode = false;
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(2);
+            packet[control_robot_id].shoot = true;
+        }
 
+    }
     public void ProcessInput()
     {
         // 初始化目标速度为0
@@ -121,12 +147,20 @@ public class Control_Sim : MonoBehaviour
         {
             packet[control_robot_id].ctrl = true;
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
         {
+
+            packet[control_robot_id].shootMode = true;
             packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
             packet[control_robot_id].shoot = true;
         }
+        else if (Input.GetMouseButton(0)) 
+        {
+            packet[control_robot_id].shootMode = false;
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+            packet[control_robot_id].shoot = true;
 
+        }
         if (Input.GetMouseButton(2)) 
         {
             nearMouseObj = Vision.FindNearestObjectInRange(Vision.mouseObj.transform.position, 2f);

@@ -26,5 +26,5 @@ public class Param : MonoBehaviour
     static public string REAL = "Real";
     static public float OUT_OF_SIGHT_Y = -10f; // Y坐标，表示机器人不在视野内
     static public float CAMERA_SLOW_DISTANCE = 3f; // 摄像机 缓慢移动的距离
-
+    static public float DRIBBLE_BALL_DISTANCE = 1.8f;
 }

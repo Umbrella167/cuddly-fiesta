@@ -82,8 +82,8 @@ public class Packet : MonoBehaviour
             var robotCommand = new grSim_Robot_Command
             {
                 Id = (uint)this.robotID,
-                Kickspeedx = this.shoot ? this.shootPowerLevel / 255 * 10 : 0.0f,
-                Kickspeedz = 0.0f,
+                Kickspeedx = this.shoot ? this.shootPowerLevel / 255 * 8 : 0.0f,
+                Kickspeedz = this.shootMode ? this.shootPowerLevel / 255 * 8 : 0.0f,
                 Veltangent = this.velY / 255 * 4,
                 Velnormal = this.velX / 255 * 4,
                 Velangular = this.velR / 500 * 8.5f,
@@ -112,6 +112,7 @@ public class Packet : MonoBehaviour
             this.shoot = false;
             this.shootPowerLevel = 0;
             this.useGlobleVel = true;
+            this.shootMode = false;
 
         }
 

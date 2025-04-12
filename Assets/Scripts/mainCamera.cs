@@ -5,7 +5,7 @@ public class mainCamera : MonoBehaviour
     public LayerMask ignoreLayer;
     public GameObject MouseImage;
     public GameObject PowerRageBoundary;
-
+    public GameObject BallDirFlag;
     public Camera cam;
     GameObject robot;
     // Start is called before the first frame update
@@ -19,7 +19,7 @@ public class mainCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Cursor.visible = false; // Òþ²ØÊó±ê
+        UnityEngine.Cursor.visible = false; // Òþ²ØÊó±ê
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -29,10 +29,23 @@ public class mainCamera : MonoBehaviour
             MouseImage.transform.position = new Vector3(hit.point.x, 0.06f, hit.point.z);
         }
         Vector3 playerPos = robot.transform.position;
+        BallDirFlag.transform.position = robot.transform.position - (Vector3.up * 0.5f);
+        BallDirFlag.transform.LookAt(Vision.ball.transform);
+        BallDirFlag.transform.eulerAngles = new Vector3(90, BallDirFlag.transform.eulerAngles.y + 90, 0);
 
-        if (Vector3.Distance(Vision.ball.transform.position, playerPos) > 2.1) 
+
+
+        if (Vector3.Distance(Vision.ball.transform.position, playerPos) > Param.DRIBBLE_BALL_DISTANCE) 
         {
             PowerRageBoundary.transform.position = robot.transform.position;
+        }
+        if (Input.GetKey(KeyCode.KeypadPlus)) 
+        {
+            transform.position += Vector3.up * 0.1f;
+        }
+        if (Input.GetKey(KeyCode.KeypadMinus))
+        {
+            transform.position -= Vector3.up * 0.1f;
         }
 
         float speed = Vector3.Distance(transform.position, playerPos) > Param.CAMERA_SLOW_DISTANCE ? 5f * Time.deltaTime : 1.2f * Time.deltaTime;
