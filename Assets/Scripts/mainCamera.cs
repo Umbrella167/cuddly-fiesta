@@ -39,11 +39,11 @@ public class mainCamera : MonoBehaviour
         {
             PowerRageBoundary.transform.position = robot.transform.position;
         }
-        if (Input.GetKey(KeyCode.KeypadPlus)) 
+        if (Input.GetKey(KeyCode.KeypadPlus) || Input.GetKey(KeyCode.Equals)) 
         {
             transform.position += Vector3.up * 0.1f;
         }
-        if (Input.GetKey(KeyCode.KeypadMinus))
+        if (Input.GetKey(KeyCode.KeypadMinus) || Input.GetKey(KeyCode.Minus))
         {
             transform.position -= Vector3.up * 0.1f;
         }

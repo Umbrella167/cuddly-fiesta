@@ -26,6 +26,7 @@ public class Control_Sim : MonoBehaviour
     static public float maxRotationOutput = 500f; // 最大旋转输出值
     static public PIDRotation pid = new PIDRotation();
     static public RadioPacket[] packet = new RadioPacket[16];
+
     RuntimeLineRenderer line;
 
 
@@ -61,7 +62,7 @@ public class Control_Sim : MonoBehaviour
         UpdateVelocity(ref selfVx, targetVx, deltaTime);
         UpdateVelocity(ref selfVy, targetVy, deltaTime);
 
-        line.UpdateExtendedLineWithAngle(Vision.selfRobot.transform.position + Vector3.up * 0.01f, Vision.selfRobot.transform.eulerAngles.y, 20f);
+        line.UpdateExtendedLineWithAngle(Vision.selfRobot.transform.position + Vector3.up * 0.01f, Vision.selfRobot.transform.eulerAngles.y, 80f);
         packet[control_robot_id].velR = Control_Utils.RotateTowardsTarget(Vision.selfRobot, targetObj.transform.position, pid,Param.SIMULATE);
         packet[control_robot_id].velX = selfVx;
         packet[control_robot_id].velY = selfVy;
@@ -159,6 +160,15 @@ public class Control_Sim : MonoBehaviour
             packet[control_robot_id].shootMode = false;
             packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
             packet[control_robot_id].shoot = true;
+            if (Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(45, 5), new Vector2(45, -5)) ||
+                Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(-45, 5), new Vector2(-45, -5)))
+            {
+                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(99999);
+            }
+            else
+            {
+                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+            }
 
         }
         if (Input.GetMouseButton(2)) 

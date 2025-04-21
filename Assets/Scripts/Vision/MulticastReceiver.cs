@@ -17,7 +17,6 @@ public class MulticastReceiver : MonoBehaviour
 
     public string MCAST_GRP =  Param.MCAST_GRP;
     public  int MCAST_PORT = Connect_Gate.GAME_MODE == Param.REAL ? Param.MCAST_PORT_REAL: Param.MCAST_PORT_SIM;
-    private const float SCALE_NUM = 0.01f;
     private const int NUM_ROBOTS = 16; // 每个队伍的机器人数量
     private const int DISAPPEARANCE_THRESHOLD = 20; // 消失次数阈值
     public GameObject ball_obj = null;
@@ -152,8 +151,8 @@ public class MulticastReceiver : MonoBehaviour
             HashSet<uint> detectedYellowIds = new HashSet<uint>();
             foreach (var ball in packet.Detection.Balls) 
             {
-                float x = ball.X * SCALE_NUM;
-                float y = ball.Y * SCALE_NUM;
+                float x = ball.X * Param.SCALE_COORDINATE;
+                float y = ball.Y * Param.SCALE_COORDINATE;
                 ball_obj.transform.position = new UnityEngine.Vector3(x, -0.5f, y);
             }
             // 处理蓝色机器人
@@ -162,8 +161,8 @@ public class MulticastReceiver : MonoBehaviour
 
                 uint id = robot_blue.RobotId;
                 detectedBlueIds.Add(id);
-                float x = robot_blue.X * SCALE_NUM;
-                float y = robot_blue.Y * SCALE_NUM;
+                float x = robot_blue.X * Param.SCALE_COORDINATE;
+                float y = robot_blue.Y * Param.SCALE_COORDINATE;
                 //float dir = -robot_blue.Orientation * Mathf.Rad2Deg;
                 float dir = -(robot_blue.Orientation + Mathf.PI / 2) * Mathf.Rad2Deg;
 
@@ -186,8 +185,8 @@ public class MulticastReceiver : MonoBehaviour
             {
                 uint id = robot_yellow.RobotId;
                 detectedYellowIds.Add(id);
-                float x = robot_yellow.X * SCALE_NUM;
-                float y = robot_yellow.Y * SCALE_NUM;
+                float x = robot_yellow.X * Param.SCALE_COORDINATE;
+                float y = robot_yellow.Y * Param.SCALE_COORDINATE;
                 float dir = -(robot_yellow.Orientation + Mathf.PI / 2) * Mathf.Rad2Deg;
 
                 string obj_name = "yellow_robot" + id.ToString();

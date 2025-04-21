@@ -11,7 +11,11 @@ public class Param : MonoBehaviour
     static public int MCAST_PORT_SIM = 10020; // 视觉接收端口 仿真10020，实物10005
     static public int MCAST_PORT_REAL = 10005; // 视觉接收端口 仿真10020，实物10005
 
+    static public float SCALE_COORDINATE = 0.01f;
     // control
+
+    static public int MAX_POWER = 255;
+
     static public float NROMAL_SPEED = 80f;
     static public float SLOW_SPEED = 40f;
     static public float MAX_SPEED = 200f;
