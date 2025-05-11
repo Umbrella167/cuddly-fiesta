@@ -5,7 +5,7 @@ public class RuntimeLineRenderer : MonoBehaviour
     public Material lineMaterial; // 使用默认材质或自定义材质
     private LineRenderer lineRenderer;
 
-    void Awake()
+    void Start()
     {
         // 创建LineRenderer组件
         lineRenderer = gameObject.AddComponent<LineRenderer>();

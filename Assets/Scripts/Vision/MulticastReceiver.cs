@@ -16,7 +16,9 @@ public class MulticastReceiver : MonoBehaviour
     static public SSL_WrapperPacket[] vision_packet_real = new SSL_WrapperPacket[4];
 
     public string MCAST_GRP =  Param.MCAST_GRP;
-    public  int MCAST_PORT = Connect_Gate.GAME_MODE == Param.REAL ? Param.MCAST_PORT_REAL: Param.MCAST_PORT_SIM;
+    public  int MCAST_PORT = (Connect_Gate.GAME_MODE == Param.REAL) ? Param.MCAST_PORT_REAL: Param.MCAST_PORT_SIM;
+
+
     private const int NUM_ROBOTS = 16; // 每个队伍的机器人数量
     private const int DISAPPEARANCE_THRESHOLD = 20; // 消失次数阈值
     public GameObject ball_obj = null;
@@ -30,6 +32,7 @@ public class MulticastReceiver : MonoBehaviour
 
     void Start()
     {
+        MCAST_PORT = (Connect_Gate.GAME_MODE == Param.REAL) ? Param.MCAST_PORT_REAL : Param.MCAST_PORT_SIM;
         // 初始化机器人字典
         InitializeRobots(blueRobots, "blue_robot");
         InitializeRobots(yellowRobots, "yellow_robot");
@@ -111,6 +114,7 @@ public class MulticastReceiver : MonoBehaviour
             EndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
             while (true)
             {
+                
                 int bytesReceived = multicastSocket.ReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref remoteEndPoint);
                 // 将接收到的字节数组反序列化为SSL_WrapperPacket
                 if (bytesReceived > 0)
@@ -143,7 +147,6 @@ public class MulticastReceiver : MonoBehaviour
     void ProcessPacket(SSL_WrapperPacket packet)
     {
         // 处理检测数据
-        
         if (packet.Detection != null)
         {
             // 创建HashSet来快速查找当前帧中存在的机器人ID
@@ -243,7 +246,7 @@ public class MulticastReceiver : MonoBehaviour
         // 处理几何数据
         if (packet.Geometry != null)
         {
-            Debug.Log(packet.Geometry);
+            //Debug.Log(packet.Geometry);
             // 在这里处理Geometry数据
         }
     }

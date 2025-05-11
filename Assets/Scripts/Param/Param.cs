@@ -9,7 +9,7 @@ public class Param : MonoBehaviour
     // vision
     static public string MCAST_GRP = "224.5.23.2"; // 视觉接收地址
     static public int MCAST_PORT_SIM = 10020; // 视觉接收端口 仿真10020，实物10005
-    static public int MCAST_PORT_REAL = 10005; // 视觉接收端口 仿真10020，实物10005
+    static public int MCAST_PORT_REAL = 10006; // 视觉接收端口 仿真10020，实物10005
 
     static public float SCALE_COORDINATE = 0.01f;
     // control

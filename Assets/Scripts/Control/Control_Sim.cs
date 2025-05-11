@@ -1,18 +1,20 @@
-﻿using System;
+﻿using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using static Packet;
 using static UnityEngine.GraphicsBuffer;
+using static Vision;
 
 public class Control_Sim : MonoBehaviour
 {
     public GameObject PowerRageBoundary;
     static public float targetVx = 0;
     static public float targetVy = 0;
-    static public float acceleration = 80f;   // 加速度（单位/秒²）
-    static public float deceleration = 400f;   // 减速度（单位/秒²）
+    static public float acceleration = 120f;   // 加速度（单位/秒²）
+    static public float deceleration = 999f;   // 减速度（单位/秒²）
 
     static int control_robot_id = Connect_Gate.robotID;
     static int control_frequency = Connect_Gate.frequency;
@@ -30,7 +32,8 @@ public class Control_Sim : MonoBehaviour
     RuntimeLineRenderer line;
 
 
-    
+    public GotoPos gotoPosSkill;
+
     public void Awake()
     {
         if (Param.GAME_MODE != Param.SIMULATE) return;
@@ -56,25 +59,19 @@ public class Control_Sim : MonoBehaviour
         resetPacket();
         ProcessInput();
         autoShoot();
-        auto_unlock_ball();
-
         float deltaTime = Time.deltaTime;
+        //Vector3 apf_vel = ArtificalPotentialField.APF(selfRobot, new Vector3(selfVx, selfVy,0));
+        //selfVx = apf_vel.x;
+        //selfVy = apf_vel.y;
         UpdateVelocity(ref selfVx, targetVx, deltaTime);
         UpdateVelocity(ref selfVy, targetVy, deltaTime);
-
+        
+        
         line.UpdateExtendedLineWithAngle(Vision.selfRobot.transform.position + Vector3.up * 0.01f, Vision.selfRobot.transform.eulerAngles.y, 80f);
-        packet[control_robot_id].velR = Control_Utils.RotateTowardsTarget(Vision.selfRobot, targetObj.transform.position, pid,Param.SIMULATE);
+        packet[control_robot_id].velR = Control_Utils.RotateTowardsTarget(Vision.selfRobot, targetObj.transform.position, pid, Param.SIMULATE);
+        
         packet[control_robot_id].velX = selfVx;
         packet[control_robot_id].velY = selfVy;
-
-    }
-
-    public void auto_unlock_ball() 
-    {
-        if (Vector3.Distance(Vision.ball.transform.position, Vision.selfRobot.transform.position) <= Param.DRIBBLE_BALL_DISTANCE) 
-        {
-            targetObj = Vision.mouseObj;
-        }
 
     }
 
@@ -139,9 +136,13 @@ public class Control_Sim : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            targetVy = -1 * targetVy;
-            packet[control_robot_id].useGlobleVel = false;
-        
+            //targetVy = -1 * targetVy;
+            //packet[control_robot_id].useGlobleVel = false;
+            Vector3 toposvel = GotoPos.robot2pos(Vision.selfRobot, Vision.ball.transform.position);
+            //Vector3 toposvel = GetBall.calculateInterceptionVelocity(Vision.selfRobot, Vision.ball);
+            targetObj = Vision.ball;
+            selfVx = toposvel.x;
+            selfVy = toposvel.y;
         }
             
         if (Input.GetMouseButton(1))
@@ -171,12 +172,7 @@ public class Control_Sim : MonoBehaviour
             }
 
         }
-        if (Input.GetMouseButton(2)) 
-        {
-            nearMouseObj = Vision.FindNearestObjectInRange(Vision.mouseObj.transform.position, 2f);
-            nearMouseObj = nearMouseObj == null ? Vision.mouseObj : nearMouseObj;
-            targetObj = nearMouseObj;
-        }
+
 
         packet[control_robot_id].velX = selfVx;
         packet[control_robot_id].velY = selfVy;
@@ -186,8 +182,16 @@ public class Control_Sim : MonoBehaviour
     public void resetPacket()
     {
         packet[control_robot_id].resetPacket(control_robot_id, control_frequency);
-
+        targetObj = Vision.mouseObj;
         //selfVx = 0;
         //selfVy = 0;
+    }
+
+
+    public void send_vel(Vector3 vel)
+    {
+        packet[control_robot_id].velX = vel.x;
+        packet[control_robot_id].velY = vel.y;
+        packet[control_robot_id].velR = vel.z;
     }
 }
