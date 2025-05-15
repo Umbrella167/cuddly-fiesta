@@ -14,7 +14,11 @@ public class PIDRotation
         float proportional = P * error;
 
         // 积分项（带限幅防止积分饱和）
-        _integral = Mathf.Clamp(_integral + error * deltaTime, -1, 1);
+        _integral = Mathf.Clamp(_integral + error * deltaTime, -100, 100);
+        if(Mathf.Abs(error) < 0.5f)
+        {
+            _integral = 0;
+        }
         float integral = I * _integral;
 
         // 微分项（使用误差变化率）

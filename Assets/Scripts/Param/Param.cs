@@ -1,26 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+// using System.Collections; // å¦‚æœæœªä½¿ç”¨å¯ä»¥ç§»é™¤
 
 public class Param : MonoBehaviour
 {
-
-    static public string GAME_MODE;
-    static public string GAME_CONNECT_MODE;
-    // vision
-    static public string MCAST_GRP = "224.5.23.2"; // ÊÓ¾õ½ÓÊÕµØÖ·
-    static public int MCAST_PORT_SIM = 10020; // ÊÓ¾õ½ÓÊÕ¶Ë¿Ú ·ÂÕæ10020£¬ÊµÎï10005
-    static public int MCAST_PORT_REAL = 10006; // ÊÓ¾õ½ÓÊÕ¶Ë¿Ú ·ÂÕæ10020£¬ÊµÎï10005
-
-    static public float SCALE_COORDINATE = 0.01f;
-    // control
-
-    static public int MAX_POWER = 255;
-
-    static public float NROMAL_SPEED = 70f;
-    static public float SLOW_SPEED = 40f;
-    static public float MAX_SPEED = 255f;
-
+    // STATIC (è¿™äº›ä¿æŒç¡¬ç¼–ç æˆ–ä¸åœ¨æ­¤æ¬¡JSONåŠ è½½è¯·æ±‚èŒƒå›´å†…)
     static public int BALL_Z = 0;
     static public float ROBOT_Z = 0.54f;
     static public int MAX_PLAYER = 16;
@@ -30,7 +13,74 @@ public class Param : MonoBehaviour
     static public string PLAYER = "player";
     static public string SIMULATE = "Simulate";
     static public string REAL = "Real";
-    static public float OUT_OF_SIGHT_Y = -10f; // Y×ø±ê£¬±íÊ¾»úÆ÷ÈË²»ÔÚÊÓÒ°ÄÚ
-    static public float CAMERA_SLOW_DISTANCE = 3f; // ÉãÏñ»ú »ºÂıÒÆ¶¯µÄ¾àÀë
+    static public float OUT_OF_SIGHT_Y = -10f;
+    static public float CAMERA_SLOW_DISTANCE = 3f;
     static public float DRIBBLE_BALL_DISTANCE = 1.75f;
+
+    static public string GAME_MODE;
+    static public string GAME_CONNECT_MODE;
+    static public float SCALE_COORDINATE = 0.01f;
+    static public int MAX_POWER = 255;
+
+    // ////////////////////////////////////////////////////////////JSON READ////////////////////////////////////////////////////////////////////////////////////
+    // vision
+    static public string MCAST_GRP;
+    static public int MCAST_PORT_SIM;
+    static public int MCAST_PORT_REAL;
+
+    // ref box
+    static public string REF_MCAST_GRP;
+    static public int REF_MCAST_PORT;
+
+    //real control udp
+    static public int CONTROL_SERVERPORT;
+
+    /////////////////////////////////////////////////////////////////////////////REAL//////////////////////////////////////////////////////////////////////////
+    // POWERSET
+    static public float REAL_POWERSET_RATE_CHIP;
+    static public float REAL_POWERSET_MIN_CHIP;
+    static public float REAL_POWERSET_MAX_CHIP;
+
+    static public float REAL_POWERSET_RATE_FLAT;
+    static public float REAL_POWERSET_MIN_FLAT;
+    static public float REAL_POWERSET_MAX_FLAT;
+
+    // ROTATE PID
+    static public float REAL_PIDROTATION_KP;
+    static public float REAL_PIDROTATION_KI;
+    static public float REAL_PIDROTATION_KD;
+
+    //AUTO ACC (è¿™äº›å˜é‡ä¹‹å‰åœ¨REALæ³¨é‡Šå—ä¸‹ï¼Œä½†æ²¡æœ‰REAL_å‰ç¼€)
+    // ParamLoader ä¼šå°† RealParams.DRIBBLING_ACC æ˜ å°„åˆ°æ­¤å¤„çš„ DRIBBLING_ACC
+    static public float DRIBBLING_ACC;
+    static public float UNDRIBBLING_ACC;
+
+    // CONTROL SPEED
+    static public float REAL_NROMAL_SPEED; // æ³¨æ„: å˜é‡åä¸­çš„ "NROMAL" æ˜¯ä¸ªå¯èƒ½çš„æ‹¼å†™é”™è¯¯
+    static public float REAL_SLOW_SPEED;
+    static public float REAL_MAX_SPEED;
+
+    /////////////////////////////////////////////////////////////////////////////SIM//////////////////////////////////////////////////////////////////////////
+    // SIM PIDæ§åˆ¶å‚æ•°
+    static public float SIM_PIDROTATION_KP;
+    static public float SIM_PIDROTATION_KI;
+    static public float SIM_PIDROTATION_KD;
+
+    // SIM åŠŸç‡è®¾ç½®å‚æ•°
+    static public float SIM_POWERSET_RATE_CHIP;
+    static public float SIM_POWERSET_MIN_CHIP;
+    static public float SIM_POWERSET_MAX_CHIP;
+
+    static public float SIM_POWERSET_RATE_FLAT;
+    static public float SIM_POWERSET_MIN_FLAT;
+    static public float SIM_POWERSET_MAX_FLAT;
+
+    // è‡ªåŠ¨åŠ é€Ÿå‚æ•°
+    static public float SIM_DRIBBLING_ACC;
+    static public float SIM_UNDRIBBLING_ACC;
+
+    // æ§åˆ¶é€Ÿåº¦å‚æ•°
+    static public float SIM_NROMAL_SPEED; // æ³¨æ„: å˜é‡åä¸­çš„ "NROMAL" æ˜¯ä¸ªå¯èƒ½çš„æ‹¼å†™é”™è¯¯
+    static public float SIM_SLOW_SPEED;
+    static public float SIM_MAX_SPEED;
 }

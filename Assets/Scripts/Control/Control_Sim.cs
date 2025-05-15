@@ -43,14 +43,15 @@ public class Control_Sim : MonoBehaviour
             packet[i] = new RadioPacket(control_frequency); // 或者使用不同的参数，根据你的需求
             packet[i].robotID = i;
         }
-        pid.P = 7.85f;
-        pid.I = 0.03f;
-        pid.D = 0.5f;
+        pid.P = Param.SIM_PIDROTATION_KP;
+        pid.I = Param.SIM_PIDROTATION_KI;
+        pid.D = Param.SIM_PIDROTATION_KD;
         System.Threading.Thread.Sleep(100);
         targetObj = Vision.mouseObj;
         line = gameObject.AddComponent<RuntimeLineRenderer>();
 
     }
+
 
     // Update is called once per frame
     public void Update()
@@ -117,21 +118,21 @@ public class Control_Sim : MonoBehaviour
         targetVy = 0;
 
         // 键盘输入处理
-        if (Input.GetKey(KeyCode.D)) targetVx = Param.NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.A)) targetVx = -Param.NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.W)) targetVy = -Param.NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.S)) targetVy = Param.NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.D)) targetVx = Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.A)) targetVx = -Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.W)) targetVy = -Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.S)) targetVy = Param.SIM_NROMAL_SPEED;
 
         // 速度模式切换
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.MAX_SPEED : 0;
-            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.MAX_SPEED : 0;
+            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.SIM_MAX_SPEED : 0;
+            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.SIM_MAX_SPEED : 0;
         }
         else if (Input.GetKey(KeyCode.LeftControl))
         {
-            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.SLOW_SPEED : 0;
-            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.SLOW_SPEED : 0;
+            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.SIM_SLOW_SPEED : 0;
+            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.SIM_SLOW_SPEED : 0;
         }
 
         if (Input.GetKey(KeyCode.Space))

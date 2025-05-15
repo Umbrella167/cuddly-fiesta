@@ -13,11 +13,11 @@ public class UdpNetwork : MonoBehaviour
     public Mode networkMode = Mode.Server;
 
     // Server settings
-    public int serverPort = 16701;
+    public int serverPort = Param.CONTROL_SERVERPORT;
 
     // Client settings
     public string serverIP = "172.20.64.232";
-    public int clientTargetPort = 16701;
+    public int clientTargetPort = Param.CONTROL_SERVERPORT;
 
     private UdpClient udpClient;
     private IPEndPoint targetEndPoint;

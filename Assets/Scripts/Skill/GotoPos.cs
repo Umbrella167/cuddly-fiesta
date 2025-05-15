@@ -40,8 +40,6 @@ public class GotoPos : MonoBehaviour
         {
             vel.x = controlOutputX;
             vel.y = -controlOutputY;
-
-
         }
         else
         {

@@ -39,9 +39,9 @@ public class Control_Real : MonoBehaviour
             packet[i] = new RadioPacket(control_frequency); // 或者使用不同的参数，根据你的需求
             packet[i].robotID = i;
         }
-        pid.P = 3.5f;
-        pid.I = 0.01f;
-        pid.D = 0.01f;
+        pid.P = Param.REAL_PIDROTATION_KP;
+        pid.I = Param.REAL_PIDROTATION_KI;
+        pid.D = Param.REAL_PIDROTATION_KD;
         System.Threading.Thread.Sleep(100);
         targetObj = Vision.mouseObj;
         line = gameObject.AddComponent<RuntimeLineRenderer>();
@@ -116,21 +116,21 @@ public class Control_Real : MonoBehaviour
         targetVy = 0;
 
         // 键盘输入处理
-        if (Input.GetKey(KeyCode.S)) targetVx = Param.NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.W)) targetVx = -Param.NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.D)) targetVy = -Param.NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.A)) targetVy = Param.NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.S)) targetVx = Param.REAL_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.W)) targetVx = -Param.REAL_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.D)) targetVy = -Param.REAL_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.A)) targetVy = Param.REAL_NROMAL_SPEED;
 
         // 速度模式切换
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.MAX_SPEED : 0;
-            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.MAX_SPEED : 0;
+            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.REAL_MAX_SPEED : 0;
+            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.REAL_MAX_SPEED : 0;
         }
         else if (Input.GetKey(KeyCode.LeftControl))
         {
-            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.SLOW_SPEED : 0;
-            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.SLOW_SPEED : 0;
+            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.REAL_SLOW_SPEED : 0;
+            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.REAL_SLOW_SPEED : 0;
         }
 
         if (Input.GetKey(KeyCode.Space))
@@ -148,17 +148,19 @@ public class Control_Real : MonoBehaviour
         {
             packet[control_robot_id].ctrl = true;
         }
+
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
         {
 
             packet[control_robot_id].shootMode = true;
-            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude * 0.2f);
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude,Param.REAL_POWERSET_RATE_CHIP,Param.REAL_POWERSET_MIN_CHIP, Param.REAL_POWERSET_MAX_CHIP);
             packet[control_robot_id].shoot = true;
         }
         else if (Input.GetMouseButton(0))
         {
             packet[control_robot_id].shootMode = false;
-            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude, Param.REAL_POWERSET_RATE_FLAT, Param.REAL_POWERSET_MIN_FLAT, Param.REAL_POWERSET_MAX_FLAT);
+
             packet[control_robot_id].shoot = true;
             if (Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(45, 5), new Vector2(45, -5)) ||
                 Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(-45, 5), new Vector2(-45, -5)))
@@ -167,7 +169,7 @@ public class Control_Real : MonoBehaviour
             }
             else
             {
-                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude, Param.REAL_POWERSET_RATE_FLAT, Param.REAL_POWERSET_MIN_FLAT, Param.REAL_POWERSET_MAX_FLAT);
             }
 
         }
@@ -184,11 +186,11 @@ public class Control_Real : MonoBehaviour
     {
         if (Vector3.Distance(Vision.ball.transform.position, Vision.selfRobot.transform.position) < Param.DRIBBLE_BALL_DISTANCE)
         {
-            acceleration = 80f;
+            acceleration = Param.DRIBBLING_ACC;
         }
         else
         {
-            acceleration = 999f;
+            acceleration = Param.UNDRIBBLING_ACC;
         }
 
     }

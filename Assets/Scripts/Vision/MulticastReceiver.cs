@@ -61,6 +61,7 @@ public class MulticastReceiver : MonoBehaviour
 
     void Start()
     {
+        MCAST_GRP = Param.MCAST_GRP;
         MCAST_PORT = (Connect_Gate.GAME_MODE == Param.REAL) ? Param.MCAST_PORT_REAL : Param.MCAST_PORT_SIM;
 
         InitializeRobots(blueRobots, "blue_robot", blueDisappearanceCounts);

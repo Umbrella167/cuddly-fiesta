@@ -12,8 +12,8 @@ public class RefereeReceiver : MonoBehaviour
     public Referee referee_msg = null;
     public TMP_Text ref_msg = null;
     public GameObject ball_placement = null;
-    public string MCAST_GRP = "224.5.23.1";
-    public int MCAST_PORT = 10003;
+    public string MCAST_GRP = Param.REF_MCAST_GRP;
+    public int MCAST_PORT = Param.REF_MCAST_PORT;
 
     void Start()
     {
