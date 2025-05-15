@@ -40,7 +40,7 @@ public class Control_Utils : MonoBehaviour
         return new float[] { local_vx, local_vy };
     }
      
-    static public float PowerSet(float dist, float rate = 0.088f, float min = 5, float max = 255)
+    static public float PowerSet(float dist, float rate = 0.018f, float min = 3, float max = 165)
     {
 
         // 检查输入参数的有效性

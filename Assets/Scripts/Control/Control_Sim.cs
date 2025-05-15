@@ -57,6 +57,7 @@ public class Control_Sim : MonoBehaviour
     {
         if (Param.GAME_MODE != Param.SIMULATE) return;
         resetPacket();
+        
         ProcessInput();
         autoShoot();
         float deltaTime = Time.deltaTime;
@@ -75,7 +76,6 @@ public class Control_Sim : MonoBehaviour
 
     }
 
-    
     private void UpdateVelocity(ref float current, float target, float deltaTime)
     {
         if (Mathf.Approximately(target, 0))

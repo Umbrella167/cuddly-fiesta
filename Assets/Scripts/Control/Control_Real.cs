@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +6,12 @@ using static Packet;
 
 public class Control_Real : MonoBehaviour
 {
+    public GameObject PowerRageBoundary;
+    static public float targetVx = 0;
+    static public float targetVy = 0;
+    static public float acceleration = 120f;   // 加速度（单位/秒²）
+    static public float deceleration = 999f;   // 减速度（单位/秒²）
+
     static int control_robot_id = Connect_Gate.robotID;
     static int control_frequency = Connect_Gate.frequency;
     static string control_team = Connect_Gate.team;
@@ -15,83 +21,190 @@ public class Control_Real : MonoBehaviour
     static public float selfVy = 0;
     static public float selfVr = 0;
     static public float selfPower = 0;
-    static public float maxRotationOutput = 500f; // �����ת���ֵ
+    static public float maxRotationOutput = 500f; // 最大旋转输出值
     static public PIDRotation pid = new PIDRotation();
     static public RadioPacket[] packet = new RadioPacket[16];
+
+    RuntimeLineRenderer line;
+
+
+    public GotoPos gotoPosSkill;
+
     public void Awake()
     {
         if (Param.GAME_MODE != Param.REAL) return;
 
         for (int i = 0; i < packet.Length; i++)
         {
-            packet[i] = new RadioPacket(control_frequency); // ����ʹ�ò�ͬ�Ĳ����������������
+            packet[i] = new RadioPacket(control_frequency); // 或者使用不同的参数，根据你的需求
             packet[i].robotID = i;
         }
         pid.P = 3.5f;
         pid.I = 0.01f;
         pid.D = 0.01f;
-        System.Threading.Thread.Sleep(1000);
+        System.Threading.Thread.Sleep(100);
         targetObj = Vision.mouseObj;
+        line = gameObject.AddComponent<RuntimeLineRenderer>();
+
     }
 
     // Update is called once per frame
     public void Update()
     {
         if (Param.GAME_MODE != Param.REAL) return;
+        autoACC();
         resetPacket();
         ProcessInput();
+        autoShoot();
+        float deltaTime = Time.deltaTime;
+        //Vector3 apf_vel = ArtificalPotentialField.APF(selfRobot, new Vector3(selfVx, selfVy,0));
+        //selfVx = apf_vel.x;
+        //selfVy = apf_vel.y;
+        UpdateVelocity(ref selfVx, targetVx, deltaTime);
+        UpdateVelocity(ref selfVy, targetVy, deltaTime);
+
+
+        line.UpdateExtendedLineWithAngle(Vision.selfRobot.transform.position + Vector3.up * 0.01f, Vision.selfRobot.transform.eulerAngles.y, 80f);
+
+        if (!Vision.isValid(control_robot_id)) return;
         packet[control_robot_id].velR = Control_Utils.RotateTowardsTarget(Vision.selfRobot, targetObj.transform.position, pid, Param.REAL);
+
+        packet[control_robot_id].velX = selfVx;
+        packet[control_robot_id].velY = selfVy;
+
+    }
+
+
+    private void UpdateVelocity(ref float current, float target, float deltaTime)
+    {
+        if (Mathf.Approximately(target, 0))
+        {
+            // 当没有输入时使用减速度
+            current = Mathf.MoveTowards(current, 0, deceleration * deltaTime);
+        }
+        else
+        {
+            // 根据目标方向使用加速度
+            float accelerateDirection = Mathf.Sign(target);
+            if (Mathf.Approximately(current, 0) || Mathf.Sign(current) == accelerateDirection)
+            {
+                // 同方向加速
+                current = Mathf.MoveTowards(current, target, acceleration * deltaTime);
+            }
+            else
+            {
+                // 反向时先快速减速
+                current = Mathf.MoveTowards(current, 0, deceleration * 2 * deltaTime);
+            }
+        }
+    }
+    public void autoShoot()
+    {
+        float distance = Vector3.Distance(Vision.ball.transform.position, PowerRageBoundary.transform.position);
+        if (distance > 8.2)
+        {
+            packet[control_robot_id].shootMode = false;
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(2);
+            packet[control_robot_id].shoot = true;
+        }
 
     }
     public void ProcessInput()
     {
+        // 初始化目标速度为0
+        targetVx = 0;
+        targetVy = 0;
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            selfVx = 50;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            selfVx = -50;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            selfVy = -50;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            selfVy = 50;
-        }
+        // 键盘输入处理
+        if (Input.GetKey(KeyCode.S)) targetVx = Param.NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.W)) targetVx = -Param.NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.D)) targetVy = -Param.NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.A)) targetVy = Param.NROMAL_SPEED;
+
+        // 速度模式切换
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            selfVx = selfVx != 0 ? Math.Sign(selfVx) * 255 : 0;
-            selfVy = selfVy != 0 ? Math.Sign(selfVy) * 255 : 0;
+            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.MAX_SPEED : 0;
+            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.MAX_SPEED : 0;
         }
+        else if (Input.GetKey(KeyCode.LeftControl))
+        {
+            targetVx = targetVx != 0 ? Mathf.Sign(targetVx) * Param.SLOW_SPEED : 0;
+            targetVy = targetVy != 0 ? Mathf.Sign(targetVy) * Param.SLOW_SPEED : 0;
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            //targetVy = -1 * targetVy;
+            //packet[control_robot_id].useGlobleVel = false;
+            Vector3 toposvel = GotoPos.robot2pos(Vision.selfRobot, Vision.ball.transform.position,Param.REAL);
+            //Vector3 toposvel = GetBall.calculateInterceptionVelocity(Vision.selfRobot, Vision.ball);
+            targetObj = Vision.ball;
+            selfVx = toposvel.x;
+            selfVy = toposvel.y;
+        }
+
         if (Input.GetMouseButton(1))
         {
             packet[control_robot_id].ctrl = true;
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
         {
-            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+
+            packet[control_robot_id].shootMode = true;
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude * 0.2f);
             packet[control_robot_id].shoot = true;
         }
-
-        if (Input.GetMouseButton(2))
+        else if (Input.GetMouseButton(0))
         {
-            nearMouseObj = Vision.FindNearestObjectInRange(Vision.mouseObj.transform.position, 1.5f);
-            nearMouseObj = nearMouseObj == null ? Vision.mouseObj : nearMouseObj;
-            targetObj = nearMouseObj;
+            packet[control_robot_id].shootMode = false;
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+            packet[control_robot_id].shoot = true;
+            if (Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(45, 5), new Vector2(45, -5)) ||
+                Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(-45, 5), new Vector2(-45, -5)))
+            {
+                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(99999);
+            }
+            else
+            {
+                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+            }
+
         }
+
+
         packet[control_robot_id].velX = selfVx;
         packet[control_robot_id].velY = selfVy;
 
 
     }
+
+
+    public void autoACC()
+    {
+        if (Vector3.Distance(Vision.ball.transform.position, Vision.selfRobot.transform.position) < Param.DRIBBLE_BALL_DISTANCE)
+        {
+            acceleration = 80f;
+        }
+        else
+        {
+            acceleration = 999f;
+        }
+
+    }
     public void resetPacket()
     {
         packet[control_robot_id].resetPacket(control_robot_id, control_frequency);
-        selfVx = 0;
-        selfVy = 0;
+        targetObj = Vision.mouseObj;
+        //selfVx = 0;
+        //selfVy = 0;
+    }
+
+
+    public void send_vel(Vector3 vel)
+    {
+        packet[control_robot_id].velX = vel.x;
+        packet[control_robot_id].velY = vel.y;
+        packet[control_robot_id].velR = vel.z;
     }
 }

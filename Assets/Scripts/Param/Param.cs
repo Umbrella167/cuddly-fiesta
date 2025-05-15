@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Param : MonoBehaviour
 {
+
     static public string GAME_MODE;
     static public string GAME_CONNECT_MODE;
     // vision
@@ -16,11 +17,12 @@ public class Param : MonoBehaviour
 
     static public int MAX_POWER = 255;
 
-    static public float NROMAL_SPEED = 80f;
+    static public float NROMAL_SPEED = 70f;
     static public float SLOW_SPEED = 40f;
-    static public float MAX_SPEED = 200f;
+    static public float MAX_SPEED = 255f;
 
-    static public int ROBOT_Z = 0;
+    static public int BALL_Z = 0;
+    static public float ROBOT_Z = 0.54f;
     static public int MAX_PLAYER = 16;
     static public string BLUE = "blue";
     static public string YELLOW = "yellow";
@@ -30,5 +32,5 @@ public class Param : MonoBehaviour
     static public string REAL = "Real";
     static public float OUT_OF_SIGHT_Y = -10f; // Y坐标，表示机器人不在视野内
     static public float CAMERA_SLOW_DISTANCE = 3f; // 摄像机 缓慢移动的距离
-    static public float DRIBBLE_BALL_DISTANCE = 1.8f;
+    static public float DRIBBLE_BALL_DISTANCE = 1.75f;
 }

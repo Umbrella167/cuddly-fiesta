@@ -29,16 +29,26 @@ public class GotoPos : MonoBehaviour
     };
 
 
-    public static Vector3 robot2pos(GameObject robot, Vector3 targetPos)
+    public static Vector3 robot2pos(GameObject robot, Vector3 targetPos,string gamemode = "Simulate")
     {
         Vector3 vel = new Vector3(0, 0, 0);
         Vector3 robot_pos = robot.transform.position;
         float controlOutputX = controller_x.Update(robot_pos.x, targetPos.x, Time.deltaTime);
         float controlOutputY = controller_y.Update(robot_pos.z, targetPos.z, Time.deltaTime);
 
-        
-        vel.x = controlOutputX;
-        vel.y = -controlOutputY;
+        if (gamemode == Param.SIMULATE)
+        {
+            vel.x = controlOutputX;
+            vel.y = -controlOutputY;
+
+
+        }
+        else
+        {
+            vel.x = -controlOutputY;
+            vel.y = -controlOutputX;
+        }
+
 
         //Debug.Log("X: " + (targetPos.x - robot_pos.x).ToString() + "    out X: " + (vel.x).ToString() +"    Y: " + (targetPos.z - robot_pos.z).ToString() + "    out Y: " + (vel.y).ToString());
         return vel;
