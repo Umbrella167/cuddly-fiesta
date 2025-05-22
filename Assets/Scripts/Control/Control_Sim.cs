@@ -57,6 +57,7 @@ public class Control_Sim : MonoBehaviour
     public void Update()
     {
         if (Param.GAME_MODE != Param.SIMULATE) return;
+        autoACC();
         resetPacket();
         
         ProcessInput();
@@ -106,7 +107,7 @@ public class Control_Sim : MonoBehaviour
         if (distance > 8.2)
         {
             packet[control_robot_id].shootMode = false;
-            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(2);
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(0.5f);
             packet[control_robot_id].shoot = true;
         }
 
@@ -118,10 +119,10 @@ public class Control_Sim : MonoBehaviour
         targetVy = 0;
 
         // 键盘输入处理
-        if (Input.GetKey(KeyCode.W)) targetVx = Param.SIM_NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.S)) targetVx = -Param.SIM_NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.D)) targetVy = -Param.SIM_NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.A)) targetVy = Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.S)) targetVx = Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.W)) targetVx = -Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.A)) targetVy = -Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.D)) targetVy = Param.SIM_NROMAL_SPEED;
 
         // 速度模式切换
         if (Input.GetKey(KeyCode.LeftShift))
@@ -162,12 +163,12 @@ public class Control_Sim : MonoBehaviour
             packet[control_robot_id].shootMode = false;
             packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude, Param.SIM_POWERSET_RATE_FLAT, Param.SIM_POWERSET_MIN_FLAT, Param.SIM_POWERSET_MAX_FLAT);
             packet[control_robot_id].shoot = true;
-            if (Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(45, 5), new Vector2(45, -5)) ||
-                Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(-45, 5), new Vector2(-45, -5)))
+            if (Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(45, -2.5f), new Vector2(45, 2.5f)) ||
+                Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(-45, -2.5f), new Vector2(-45, 2.5f)))
             {
-                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(99999);
+                packet[control_robot_id].shootPowerLevel = 5;
             }
-            else
+            else    
             {
                 packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude, Param.SIM_POWERSET_RATE_FLAT, Param.SIM_POWERSET_MIN_FLAT, Param.SIM_POWERSET_MAX_FLAT);
             }
@@ -178,6 +179,21 @@ public class Control_Sim : MonoBehaviour
         packet[control_robot_id].velX = selfVx;
         packet[control_robot_id].velY = selfVy;
         
+
+    }
+
+
+
+    public void autoACC()
+    {
+        if (Vector3.Distance(Vision.ball.transform.position, Vision.selfRobot.transform.position) < Param.DRIBBLE_BALL_DISTANCE)
+        {
+            acceleration = Param.SIM_DRIBBLING_ACC;
+        }
+        else
+        {
+            acceleration = Param.SIM_UNDRIBBLING_ACC;
+        }
 
     }
     public void resetPacket()

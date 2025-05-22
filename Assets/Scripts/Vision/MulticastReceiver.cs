@@ -25,11 +25,11 @@ public class MulticastReceiver : MonoBehaviour
     public int MCAST_PORT;
 
     private const int NUM_ROBOTS = 16; // 每个队伍的机器人数量
-    private const int DISAPPEARANCE_THRESHOLD = 30; // 消失次数阈值
+    private const int DISAPPEARANCE_THRESHOLD = 150; // 消失次数阈值
 
     // --- EMA Smoothing Factor ---
     [Range(0.01f, 1.0f)] // Allow tuning in the inspector
-    public float smoothingFactor = 0.5f; // Alpha value for EMA. Smaller = More smoothing, More lag.
+    public float smoothingFactor = 0.4f; // Alpha value for EMA. Smaller = More smoothing, More lag.
 
     public GameObject ball_obj = null;
 

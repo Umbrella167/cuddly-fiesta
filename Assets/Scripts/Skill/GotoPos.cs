@@ -17,7 +17,7 @@ public class GotoPos : MonoBehaviour
     {
         DeadZone = 1f,        // 调整死区大小
         DeadZoneOutput = 1,
-        MinAbsOutput = 30f  // 调整接近目标点时的最小速度
+        MinAbsOutput = 45f  // 调整接近目标点时的最小速度
 
     };
 
@@ -25,7 +25,7 @@ public class GotoPos : MonoBehaviour
     {
         DeadZone = 1f,        // 调整死区大小
         DeadZoneOutput = 1,
-        MinAbsOutput = 30f  // 调整接近目标点时的最小速度
+        MinAbsOutput = 45f  // 调整接近目标点时的最小速度
     };
 
 
@@ -38,8 +38,8 @@ public class GotoPos : MonoBehaviour
 
         if (gamemode == Param.SIMULATE)
         {
-            vel.x = controlOutputX;
-            vel.y = -controlOutputY;
+            vel.y = controlOutputX; 
+            vel.x = -controlOutputY;
         }
         else
         {

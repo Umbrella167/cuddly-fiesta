@@ -29,15 +29,27 @@ public class Control_Utils : MonoBehaviour
     }
 
 
-    static public float[] GlobalToLocalVelocity(GameObject robot, float global_vx, float global_vy,bool is_use = true)
+    static public float[] GlobalToLocalVelocity(GameObject robot, float global_vx, float global_vy,bool is_use = true,bool is_real = true)
     {
+
         if (!is_use) return new float[] { global_vx, global_vy };
+        float local_vx = global_vx;
+        float local_vy = global_vy;
         // 1. 获取机器人的全局旋转
         float theta_w = robot.transform.eulerAngles[1] * Mathf.Deg2Rad; // Convert to radians
-        float local_vx = global_vx * Mathf.Cos(theta_w) + global_vy * Mathf.Sin(theta_w);
-        float local_vy = -global_vx * Mathf.Sin(theta_w) + global_vy * Mathf.Cos(theta_w);
-        // 6. 返回局部速度数组
-        return new float[] { local_vx, local_vy };
+        if (is_real)
+        {
+            local_vx = global_vx * Mathf.Cos(theta_w) + global_vy * Mathf.Sin(theta_w);
+            local_vy = -global_vx * Mathf.Sin(theta_w) + global_vy * Mathf.Cos(theta_w);
+        }
+        else
+        {
+            local_vx = global_vx * Mathf.Cos(-theta_w) + global_vy * Mathf.Sin(-theta_w);
+            local_vy = -global_vx * Mathf.Sin(-theta_w) + global_vy * Mathf.Cos(-theta_w);
+        }
+
+            // 6. 返回局部速度数组
+       return new float[] { local_vx, local_vy };
     }
     static public float[] GlobalToLocalVelocityNew(GameObject robot, float global_vx, float global_vy, bool is_use = true)
     {

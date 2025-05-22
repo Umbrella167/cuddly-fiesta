@@ -96,11 +96,13 @@ public class Packet : MonoBehaviour
 
             // 根据 shoot 和 shootMode 逻辑设置踢球模式和力度
             // 修正：根据 zss_cmd.proto, KickPower 字段是 desire_power，C# 生成为 DesirePower
-            if (this.shoot || this.shootMode)
+            if (this.shoot)
             {
                 // 修正：根据 zss_cmd.proto, KickMode 字段是 kick_mode，C# 生成为 KickMode
-                robotCommand.KickMode = this.shoot ? Robot_Command.Types.KickMode.Kick : Robot_Command.Types.KickMode.Chip;
-                robotCommand.DesirePower = this.shootPowerLevel / Param.MAX_POWER; // DesirePower 通常是一个0-1的比例
+                robotCommand.KickMode = this.shootMode ? Robot_Command.Types.KickMode.Chip : Robot_Command.Types.KickMode.Kick;
+                robotCommand.DesirePower = this.shootPowerLevel; // DesirePower 通常是一个0-1的比例
+
+
             }
             else
             {

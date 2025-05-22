@@ -21,6 +21,8 @@ public class Param : MonoBehaviour
     static public string GAME_CONNECT_MODE;
     static public float SCALE_COORDINATE = 0.01f;
     static public int MAX_POWER = 255;
+    static public int MAX_POWER_SIM = 5;
+
 
     // ////////////////////////////////////////////////////////////JSON READ////////////////////////////////////////////////////////////////////////////////////
     // vision

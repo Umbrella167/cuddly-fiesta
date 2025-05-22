@@ -38,17 +38,17 @@ public class Control : MonoBehaviour
     {
         if (game_mode == Param.SIMULATE)
         {
-            localVelocities = Control_Utils.GlobalToLocalVelocityNew(Vision.selfRobot, packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
-
+             localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot, packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel,false);
         }
         else if (game_mode == Param.REAL)
         {
             localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot, packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
-
+            
         }
-        //float[] localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot,packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
         packet[control_robot_id].velX = localVelocities[0];
         packet[control_robot_id].velY = localVelocities[1];
+        //float[] localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot,packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
+
         packet[control_robot_id].Encode();
     }
     

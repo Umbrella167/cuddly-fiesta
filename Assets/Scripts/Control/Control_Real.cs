@@ -80,7 +80,7 @@ public class Control_Real : MonoBehaviour
         if (Mathf.Approximately(target, 0))
         {
             // 当没有输入时使用减速度
-            current = Mathf.MoveTowards(current, 0, deceleration * deltaTime);
+            current = Mathf.MoveTowards(current, 0, deceleration * 2 * deltaTime);
         }
         else
         {
@@ -94,7 +94,7 @@ public class Control_Real : MonoBehaviour
             else
             {
                 // 反向时先快速减速
-                current = Mathf.MoveTowards(current, 0, deceleration * 2 * deltaTime);
+                current = Mathf.MoveTowards(current, 0, deceleration * 3 * deltaTime);
             }
         }
     }
@@ -165,7 +165,7 @@ public class Control_Real : MonoBehaviour
             if (Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(45, 5), new Vector2(45, -5)) ||
                 Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(-45, 5), new Vector2(-45, -5)))
             {
-                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(99999);
+                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet(99999, Param.SIM_POWERSET_RATE_FLAT, Param.SIM_POWERSET_MIN_FLAT, Param.SIM_POWERSET_MAX_FLAT);
             }
             else
             {
