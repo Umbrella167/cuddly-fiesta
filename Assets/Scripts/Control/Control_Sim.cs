@@ -154,13 +154,13 @@ public class Control_Sim : MonoBehaviour
         {
 
             packet[control_robot_id].shootMode = true;
-            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude, Param.SIM_POWERSET_RATE_CHIP, Param.SIM_POWERSET_MIN_CHIP, Param.SIM_POWERSET_MAX_CHIP);
             packet[control_robot_id].shoot = true;
         }
         else if (Input.GetMouseButton(0)) 
         {
             packet[control_robot_id].shootMode = false;
-            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+            packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude, Param.SIM_POWERSET_RATE_FLAT, Param.SIM_POWERSET_MIN_FLAT, Param.SIM_POWERSET_MAX_FLAT);
             packet[control_robot_id].shoot = true;
             if (Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(45, 5), new Vector2(45, -5)) ||
                 Geometry.LinesIntersect((Vision.selfRobot.transform.position).ToVector2(), (Vision.mouseObj.transform.position).ToVector2(), new Vector2(-45, 5), new Vector2(-45, -5)))
@@ -169,7 +169,7 @@ public class Control_Sim : MonoBehaviour
             }
             else
             {
-                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude);
+                packet[control_robot_id].shootPowerLevel = Control_Utils.PowerSet((targetObj.transform.position - Vision.selfRobot.transform.position).magnitude, Param.SIM_POWERSET_RATE_FLAT, Param.SIM_POWERSET_MIN_FLAT, Param.SIM_POWERSET_MAX_FLAT);
             }
 
         }

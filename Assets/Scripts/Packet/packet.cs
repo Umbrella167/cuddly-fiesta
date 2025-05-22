@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using TMPro;
 using UnityEngine;
 using static ccrc;
+using ZSS.New; // 引入ZSS.New命名空间，用于访问ZSS相关的Protobuf类
 
 public class Packet : MonoBehaviour
 {
@@ -70,7 +71,7 @@ public class Packet : MonoBehaviour
             return this.transmitPacket;
         }
 
-        public byte[] Encode_grSim() 
+        public byte[] Encode_grSim()
         {
             grSim_Packet grSimPacket = new grSim_Packet();
 
@@ -79,32 +80,67 @@ public class Packet : MonoBehaviour
                 Timestamp = 0,
                 Isteamyellow = Connect_Gate.team == "yellow" ? true : false
             };
-            var robotCommand = new grSim_Robot_Command
-            {
-                Id = (uint)this.robotID,
-                Kickspeedx = this.shoot ? this.shootPowerLevel / Param.MAX_POWER * 6.3f : 0.0f,
-                Kickspeedz = this.shootMode ? this.shootPowerLevel / Param.MAX_POWER * 6.3f : 0.0f,
-                Veltangent = this.velY / 255 * 4,
-                Velnormal = this.velX / 255 * 4,
-                Velangular = this.velR / 500 * 8.5f,
-                Spinner = this.ctrl,
-                Wheelsspeed = false,
-                Wheel1 = 0.0f,
-                Wheel2 = 0.0f,
-                Wheel3 = 0.0f,
-                Wheel4 = 0.0f
-            };
-            commands.RobotCommands.Add(robotCommand);
-            grSimPacket.Commands = commands;
 
+            // 创建 ZSS.New.Robots_Command 容器
+            var robotsCommandContainer = new ZSS.New.Robots_Command();
+
+            // 创建 ZSS.New.Robot_Command
+            var robotCommand = new ZSS.New.Robot_Command
+            {
+                // 修正：根据 zss_cmd.proto, 字段名是 robot_id，C# 生成为 RobotId
+                RobotId = this.robotID,
+                // 修正：根据 zss_cmd.proto, CmdType 字段是 cmd_type，C# 生成为 CmdType
+                CmdType = Robot_Command.Types.CmdType.CmdVel // 设置命令类型为速度命令
+            };
+
+            // 根据 shoot 和 shootMode 逻辑设置踢球模式和力度
+            // 修正：根据 zss_cmd.proto, KickPower 字段是 desire_power，C# 生成为 DesirePower
+            if (this.shoot || this.shootMode)
+            {
+                // 修正：根据 zss_cmd.proto, KickMode 字段是 kick_mode，C# 生成为 KickMode
+                robotCommand.KickMode = this.shoot ? Robot_Command.Types.KickMode.Kick : Robot_Command.Types.KickMode.Chip;
+                robotCommand.DesirePower = this.shootPowerLevel / Param.MAX_POWER; // DesirePower 通常是一个0-1的比例
+            }
+            else
+            {
+                robotCommand.KickMode = Robot_Command.Types.KickMode.None;
+                robotCommand.DesirePower = 0.0f;
+            }
+
+            // 创建 CmdVel 消息并设置速度
+            var cmdVel = new CmdVel
+            {
+                // 修正：根据 zss_cmd_type.proto, Vx, Vy, W 字段是 velocity_x, velocity_y, velocity_r
+                VelocityX = this.velX / 255f * 4f,
+                VelocityY = this.velY / 255f * 4f,
+                VelocityR = this.velR / 500f * 8.5f,
+                // 根据 zss_cmd_type.proto, CmdVel 还有一个 use_imu 字段
+                UseImu = false // 假设这里不需要使用 IMU，根据实际情况设置
+            };
+            // 修正：根据 zss_cmd.proto, CmdVel 字段是 cmd_vel，C# 生成为 CmdVel
+            robotCommand.CmdVel = cmdVel; // 将 CmdVel 消息赋值给 Robot_Command 的 CmdVel 字段
+
+            // 设置控球器状态
+            // 修正：根据 zss_cmd.proto, DribblerSpin 字段是 dribble_spin，C# 生成为 DribblerSpin
+            robotCommand.DribbleSpin = this.ctrl ? this.ctrlPowerLevel : 0.0f; // DribblerSpin 是一个 bool
+
+            // 将单个机器人命令添加到 Robots_Command 容器的 Command 列表中
+            // 修正：根据 zss_cmd.proto, repeated Robot_Command command = 1; C# 生成为 Command
+            robotsCommandContainer.Command.Add(robotCommand);
+
+            // 将 Robots_Command 容器赋值给 grSim_Commands 的 RobotCommands 字段
+            // 修正：根据 grSim_Commands.proto, Robots_Command 字段是 robot_commands，C# 生成为 RobotCommands
+            commands.RobotCommands = robotsCommandContainer;
+
+            grSimPacket.Commands = commands;
 
             return grSimPacket.ToByteArray();
         }
 
-        public void resetPacket(int roobot_id,int frequency)
+        public void resetPacket(int roobot_id, int frequency)
         {
             this.robotID = roobot_id;
-            this.frequency = frequency; 
+            this.frequency = frequency;
             this.velX = 0.0f;
             this.velY = 0.0f;
             this.velR = 0.0f;
@@ -116,7 +152,7 @@ public class Packet : MonoBehaviour
 
         }
 
-        public void Encode() 
+        public void Encode()
         {
 
             string game_mode = Connect_Gate.GAME_MODE;
@@ -124,11 +160,11 @@ public class Packet : MonoBehaviour
             {
                 Encode_Radio();
             }
-            else if (game_mode == Param.SIMULATE) 
+            else if (game_mode == Param.SIMULATE)
             {
                 this.transmitPacket = Encode_grSim();
             }
-        
+
         }
         private void EncodeLegacy(Command command, byte[] TXBuff, int num)
         {
@@ -206,7 +242,4 @@ public class Packet : MonoBehaviour
             packet2[Constants.TRANSMIT_PACKET_SIZE - 1] = ccrc.CCrc8.Calc(packet2, Constants.TRANSMIT_PACKET_SIZE - 1);
         }
     }
-
-
-
 }

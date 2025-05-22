@@ -23,18 +23,19 @@ public static partial class GrSimReplacementReflection {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
           "ChdnclNpbV9SZXBsYWNlbWVudC5wcm90byJrChZnclNpbV9Sb2JvdFJlcGxh",
-          "Y2VtZW50EgkKAXgYASACKAESCQoBeRgCIAIoARILCgNkaXIYAyACKAESCgoC",
-          "aWQYBCACKA0SEgoKeWVsbG93dGVhbRgFIAIoCBIOCgZ0dXJub24YBiABKAgi",
+          "Y2VtZW50EgkKAXgYASABKAESCQoBeRgCIAEoARILCgNkaXIYAyABKAESCgoC",
+          "aWQYBCABKA0SEgoKeWVsbG93dGVhbRgFIAEoCBIOCgZ0dXJub24YBiABKAgi",
           "RQoVZ3JTaW1fQmFsbFJlcGxhY2VtZW50EgkKAXgYASABKAESCQoBeRgCIAEo",
-          "ARIKCgJ2eBgDIAEoARIKCgJ2eRgEIAEoASJiChFnclNpbV9SZXBsYWNlbWVu",
-          "dBIkCgRiYWxsGAEgASgLMhYuZ3JTaW1fQmFsbFJlcGxhY2VtZW50EicKBnJv",
-          "Ym90cxgCIAMoCzIXLmdyU2ltX1JvYm90UmVwbGFjZW1lbnQ="));
+          "ARIKCgJ2eBgDIAEoARIKCgJ2eRgEIAEoASJwChFnclNpbV9SZXBsYWNlbWVu",
+          "dBIpCgRiYWxsGAEgASgLMhYuZ3JTaW1fQmFsbFJlcGxhY2VtZW50SACIAQES",
+          "JwoGcm9ib3RzGAIgAygLMhcuZ3JTaW1fUm9ib3RSZXBsYWNlbWVudEIHCgVf",
+          "YmFsbGIGcHJvdG8z"));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
           new pbr::GeneratedClrTypeInfo(typeof(global::grSim_RobotReplacement), global::grSim_RobotReplacement.Parser, new[]{ "X", "Y", "Dir", "Id", "Yellowteam", "Turnon" }, null, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::grSim_BallReplacement), global::grSim_BallReplacement.Parser, new[]{ "X", "Y", "Vx", "Vy" }, null, null, null, null),
-          new pbr::GeneratedClrTypeInfo(typeof(global::grSim_Replacement), global::grSim_Replacement.Parser, new[]{ "Ball", "Robots" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(typeof(global::grSim_Replacement), global::grSim_Replacement.Parser, new[]{ "Ball", "Robots" }, new[]{ "Ball" }, null, null, null)
         }));
   }
   #endregion
@@ -49,7 +50,6 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
 {
   private static readonly pb::MessageParser<grSim_RobotReplacement> _parser = new pb::MessageParser<grSim_RobotReplacement>(() => new grSim_RobotReplacement());
   private pb::UnknownFieldSet _unknownFields;
-  private int _hasBits0;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public static pb::MessageParser<grSim_RobotReplacement> Parser { get { return _parser; } }
@@ -77,7 +77,6 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public grSim_RobotReplacement(grSim_RobotReplacement other) : this() {
-    _hasBits0 = other._hasBits0;
     x_ = other.x_;
     y_ = other.y_;
     dir_ = other.dir_;
@@ -95,164 +94,74 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
 
   /// <summary>Field number for the "x" field.</summary>
   public const int XFieldNumber = 1;
-  private readonly static double XDefaultValue = 0D;
-
   private double x_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public double X {
-    get { if ((_hasBits0 & 1) != 0) { return x_; } else { return XDefaultValue; } }
+    get { return x_; }
     set {
-      _hasBits0 |= 1;
       x_ = value;
     }
-  }
-  /// <summary>Gets whether the "x" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasX {
-    get { return (_hasBits0 & 1) != 0; }
-  }
-  /// <summary>Clears the value of the "x" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearX() {
-    _hasBits0 &= ~1;
   }
 
   /// <summary>Field number for the "y" field.</summary>
   public const int YFieldNumber = 2;
-  private readonly static double YDefaultValue = 0D;
-
   private double y_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public double Y {
-    get { if ((_hasBits0 & 2) != 0) { return y_; } else { return YDefaultValue; } }
+    get { return y_; }
     set {
-      _hasBits0 |= 2;
       y_ = value;
     }
-  }
-  /// <summary>Gets whether the "y" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasY {
-    get { return (_hasBits0 & 2) != 0; }
-  }
-  /// <summary>Clears the value of the "y" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearY() {
-    _hasBits0 &= ~2;
   }
 
   /// <summary>Field number for the "dir" field.</summary>
   public const int DirFieldNumber = 3;
-  private readonly static double DirDefaultValue = 0D;
-
   private double dir_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public double Dir {
-    get { if ((_hasBits0 & 4) != 0) { return dir_; } else { return DirDefaultValue; } }
+    get { return dir_; }
     set {
-      _hasBits0 |= 4;
       dir_ = value;
     }
-  }
-  /// <summary>Gets whether the "dir" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasDir {
-    get { return (_hasBits0 & 4) != 0; }
-  }
-  /// <summary>Clears the value of the "dir" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearDir() {
-    _hasBits0 &= ~4;
   }
 
   /// <summary>Field number for the "id" field.</summary>
   public const int IdFieldNumber = 4;
-  private readonly static uint IdDefaultValue = 0;
-
   private uint id_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public uint Id {
-    get { if ((_hasBits0 & 8) != 0) { return id_; } else { return IdDefaultValue; } }
+    get { return id_; }
     set {
-      _hasBits0 |= 8;
       id_ = value;
     }
-  }
-  /// <summary>Gets whether the "id" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasId {
-    get { return (_hasBits0 & 8) != 0; }
-  }
-  /// <summary>Clears the value of the "id" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearId() {
-    _hasBits0 &= ~8;
   }
 
   /// <summary>Field number for the "yellowteam" field.</summary>
   public const int YellowteamFieldNumber = 5;
-  private readonly static bool YellowteamDefaultValue = false;
-
   private bool yellowteam_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public bool Yellowteam {
-    get { if ((_hasBits0 & 16) != 0) { return yellowteam_; } else { return YellowteamDefaultValue; } }
+    get { return yellowteam_; }
     set {
-      _hasBits0 |= 16;
       yellowteam_ = value;
     }
-  }
-  /// <summary>Gets whether the "yellowteam" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasYellowteam {
-    get { return (_hasBits0 & 16) != 0; }
-  }
-  /// <summary>Clears the value of the "yellowteam" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearYellowteam() {
-    _hasBits0 &= ~16;
   }
 
   /// <summary>Field number for the "turnon" field.</summary>
   public const int TurnonFieldNumber = 6;
-  private readonly static bool TurnonDefaultValue = false;
-
   private bool turnon_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public bool Turnon {
-    get { if ((_hasBits0 & 32) != 0) { return turnon_; } else { return TurnonDefaultValue; } }
+    get { return turnon_; }
     set {
-      _hasBits0 |= 32;
       turnon_ = value;
     }
-  }
-  /// <summary>Gets whether the "turnon" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasTurnon {
-    get { return (_hasBits0 & 32) != 0; }
-  }
-  /// <summary>Clears the value of the "turnon" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearTurnon() {
-    _hasBits0 &= ~32;
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -283,12 +192,12 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public override int GetHashCode() {
     int hash = 1;
-    if (HasX) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(X);
-    if (HasY) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Y);
-    if (HasDir) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Dir);
-    if (HasId) hash ^= Id.GetHashCode();
-    if (HasYellowteam) hash ^= Yellowteam.GetHashCode();
-    if (HasTurnon) hash ^= Turnon.GetHashCode();
+    if (X != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(X);
+    if (Y != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Y);
+    if (Dir != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Dir);
+    if (Id != 0) hash ^= Id.GetHashCode();
+    if (Yellowteam != false) hash ^= Yellowteam.GetHashCode();
+    if (Turnon != false) hash ^= Turnon.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
     }
@@ -307,27 +216,27 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     output.WriteRawMessage(this);
   #else
-    if (HasX) {
+    if (X != 0D) {
       output.WriteRawTag(9);
       output.WriteDouble(X);
     }
-    if (HasY) {
+    if (Y != 0D) {
       output.WriteRawTag(17);
       output.WriteDouble(Y);
     }
-    if (HasDir) {
+    if (Dir != 0D) {
       output.WriteRawTag(25);
       output.WriteDouble(Dir);
     }
-    if (HasId) {
+    if (Id != 0) {
       output.WriteRawTag(32);
       output.WriteUInt32(Id);
     }
-    if (HasYellowteam) {
+    if (Yellowteam != false) {
       output.WriteRawTag(40);
       output.WriteBool(Yellowteam);
     }
-    if (HasTurnon) {
+    if (Turnon != false) {
       output.WriteRawTag(48);
       output.WriteBool(Turnon);
     }
@@ -341,27 +250,27 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-    if (HasX) {
+    if (X != 0D) {
       output.WriteRawTag(9);
       output.WriteDouble(X);
     }
-    if (HasY) {
+    if (Y != 0D) {
       output.WriteRawTag(17);
       output.WriteDouble(Y);
     }
-    if (HasDir) {
+    if (Dir != 0D) {
       output.WriteRawTag(25);
       output.WriteDouble(Dir);
     }
-    if (HasId) {
+    if (Id != 0) {
       output.WriteRawTag(32);
       output.WriteUInt32(Id);
     }
-    if (HasYellowteam) {
+    if (Yellowteam != false) {
       output.WriteRawTag(40);
       output.WriteBool(Yellowteam);
     }
-    if (HasTurnon) {
+    if (Turnon != false) {
       output.WriteRawTag(48);
       output.WriteBool(Turnon);
     }
@@ -375,22 +284,22 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public int CalculateSize() {
     int size = 0;
-    if (HasX) {
+    if (X != 0D) {
       size += 1 + 8;
     }
-    if (HasY) {
+    if (Y != 0D) {
       size += 1 + 8;
     }
-    if (HasDir) {
+    if (Dir != 0D) {
       size += 1 + 8;
     }
-    if (HasId) {
+    if (Id != 0) {
       size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Id);
     }
-    if (HasYellowteam) {
+    if (Yellowteam != false) {
       size += 1 + 1;
     }
-    if (HasTurnon) {
+    if (Turnon != false) {
       size += 1 + 1;
     }
     if (_unknownFields != null) {
@@ -405,22 +314,22 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
     if (other == null) {
       return;
     }
-    if (other.HasX) {
+    if (other.X != 0D) {
       X = other.X;
     }
-    if (other.HasY) {
+    if (other.Y != 0D) {
       Y = other.Y;
     }
-    if (other.HasDir) {
+    if (other.Dir != 0D) {
       Dir = other.Dir;
     }
-    if (other.HasId) {
+    if (other.Id != 0) {
       Id = other.Id;
     }
-    if (other.HasYellowteam) {
+    if (other.Yellowteam != false) {
       Yellowteam = other.Yellowteam;
     }
-    if (other.HasTurnon) {
+    if (other.Turnon != false) {
       Turnon = other.Turnon;
     }
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -434,11 +343,7 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
   #else
     uint tag;
     while ((tag = input.ReadTag()) != 0) {
-    if ((tag & 7) == 4) {
-      // Abort on any end group tag.
-      return;
-    }
-    switch(tag) {
+      switch(tag) {
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
           break;
@@ -477,11 +382,7 @@ public sealed partial class grSim_RobotReplacement : pb::IMessage<grSim_RobotRep
   void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
     uint tag;
     while ((tag = input.ReadTag()) != 0) {
-    if ((tag & 7) == 4) {
-      // Abort on any end group tag.
-      return;
-    }
-    switch(tag) {
+      switch(tag) {
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
           break;
@@ -524,7 +425,6 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
 {
   private static readonly pb::MessageParser<grSim_BallReplacement> _parser = new pb::MessageParser<grSim_BallReplacement>(() => new grSim_BallReplacement());
   private pb::UnknownFieldSet _unknownFields;
-  private int _hasBits0;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public static pb::MessageParser<grSim_BallReplacement> Parser { get { return _parser; } }
@@ -552,7 +452,6 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public grSim_BallReplacement(grSim_BallReplacement other) : this() {
-    _hasBits0 = other._hasBits0;
     x_ = other.x_;
     y_ = other.y_;
     vx_ = other.vx_;
@@ -568,110 +467,50 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
 
   /// <summary>Field number for the "x" field.</summary>
   public const int XFieldNumber = 1;
-  private readonly static double XDefaultValue = 0D;
-
   private double x_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public double X {
-    get { if ((_hasBits0 & 1) != 0) { return x_; } else { return XDefaultValue; } }
+    get { return x_; }
     set {
-      _hasBits0 |= 1;
       x_ = value;
     }
-  }
-  /// <summary>Gets whether the "x" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasX {
-    get { return (_hasBits0 & 1) != 0; }
-  }
-  /// <summary>Clears the value of the "x" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearX() {
-    _hasBits0 &= ~1;
   }
 
   /// <summary>Field number for the "y" field.</summary>
   public const int YFieldNumber = 2;
-  private readonly static double YDefaultValue = 0D;
-
   private double y_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public double Y {
-    get { if ((_hasBits0 & 2) != 0) { return y_; } else { return YDefaultValue; } }
+    get { return y_; }
     set {
-      _hasBits0 |= 2;
       y_ = value;
     }
-  }
-  /// <summary>Gets whether the "y" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasY {
-    get { return (_hasBits0 & 2) != 0; }
-  }
-  /// <summary>Clears the value of the "y" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearY() {
-    _hasBits0 &= ~2;
   }
 
   /// <summary>Field number for the "vx" field.</summary>
   public const int VxFieldNumber = 3;
-  private readonly static double VxDefaultValue = 0D;
-
   private double vx_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public double Vx {
-    get { if ((_hasBits0 & 4) != 0) { return vx_; } else { return VxDefaultValue; } }
+    get { return vx_; }
     set {
-      _hasBits0 |= 4;
       vx_ = value;
     }
-  }
-  /// <summary>Gets whether the "vx" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasVx {
-    get { return (_hasBits0 & 4) != 0; }
-  }
-  /// <summary>Clears the value of the "vx" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearVx() {
-    _hasBits0 &= ~4;
   }
 
   /// <summary>Field number for the "vy" field.</summary>
   public const int VyFieldNumber = 4;
-  private readonly static double VyDefaultValue = 0D;
-
   private double vy_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public double Vy {
-    get { if ((_hasBits0 & 8) != 0) { return vy_; } else { return VyDefaultValue; } }
+    get { return vy_; }
     set {
-      _hasBits0 |= 8;
       vy_ = value;
     }
-  }
-  /// <summary>Gets whether the "vy" field is set</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public bool HasVy {
-    get { return (_hasBits0 & 8) != 0; }
-  }
-  /// <summary>Clears the value of the "vy" field</summary>
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public void ClearVy() {
-    _hasBits0 &= ~8;
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -700,10 +539,10 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public override int GetHashCode() {
     int hash = 1;
-    if (HasX) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(X);
-    if (HasY) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Y);
-    if (HasVx) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Vx);
-    if (HasVy) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Vy);
+    if (X != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(X);
+    if (Y != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Y);
+    if (Vx != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Vx);
+    if (Vy != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Vy);
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
     }
@@ -722,19 +561,19 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     output.WriteRawMessage(this);
   #else
-    if (HasX) {
+    if (X != 0D) {
       output.WriteRawTag(9);
       output.WriteDouble(X);
     }
-    if (HasY) {
+    if (Y != 0D) {
       output.WriteRawTag(17);
       output.WriteDouble(Y);
     }
-    if (HasVx) {
+    if (Vx != 0D) {
       output.WriteRawTag(25);
       output.WriteDouble(Vx);
     }
-    if (HasVy) {
+    if (Vy != 0D) {
       output.WriteRawTag(33);
       output.WriteDouble(Vy);
     }
@@ -748,19 +587,19 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-    if (HasX) {
+    if (X != 0D) {
       output.WriteRawTag(9);
       output.WriteDouble(X);
     }
-    if (HasY) {
+    if (Y != 0D) {
       output.WriteRawTag(17);
       output.WriteDouble(Y);
     }
-    if (HasVx) {
+    if (Vx != 0D) {
       output.WriteRawTag(25);
       output.WriteDouble(Vx);
     }
-    if (HasVy) {
+    if (Vy != 0D) {
       output.WriteRawTag(33);
       output.WriteDouble(Vy);
     }
@@ -774,16 +613,16 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public int CalculateSize() {
     int size = 0;
-    if (HasX) {
+    if (X != 0D) {
       size += 1 + 8;
     }
-    if (HasY) {
+    if (Y != 0D) {
       size += 1 + 8;
     }
-    if (HasVx) {
+    if (Vx != 0D) {
       size += 1 + 8;
     }
-    if (HasVy) {
+    if (Vy != 0D) {
       size += 1 + 8;
     }
     if (_unknownFields != null) {
@@ -798,16 +637,16 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
     if (other == null) {
       return;
     }
-    if (other.HasX) {
+    if (other.X != 0D) {
       X = other.X;
     }
-    if (other.HasY) {
+    if (other.Y != 0D) {
       Y = other.Y;
     }
-    if (other.HasVx) {
+    if (other.Vx != 0D) {
       Vx = other.Vx;
     }
-    if (other.HasVy) {
+    if (other.Vy != 0D) {
       Vy = other.Vy;
     }
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -821,11 +660,7 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
   #else
     uint tag;
     while ((tag = input.ReadTag()) != 0) {
-    if ((tag & 7) == 4) {
-      // Abort on any end group tag.
-      return;
-    }
-    switch(tag) {
+      switch(tag) {
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
           break;
@@ -856,11 +691,7 @@ public sealed partial class grSim_BallReplacement : pb::IMessage<grSim_BallRepla
   void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
     uint tag;
     while ((tag = input.ReadTag()) != 0) {
-    if ((tag & 7) == 4) {
-      // Abort on any end group tag.
-      return;
-    }
-    switch(tag) {
+      switch(tag) {
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
           break;
@@ -1064,11 +895,7 @@ public sealed partial class grSim_Replacement : pb::IMessage<grSim_Replacement>
   #else
     uint tag;
     while ((tag = input.ReadTag()) != 0) {
-    if ((tag & 7) == 4) {
-      // Abort on any end group tag.
-      return;
-    }
-    switch(tag) {
+      switch(tag) {
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
           break;
@@ -1094,11 +921,7 @@ public sealed partial class grSim_Replacement : pb::IMessage<grSim_Replacement>
   void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
     uint tag;
     while ((tag = input.ReadTag()) != 0) {
-    if ((tag & 7) == 4) {
-      // Abort on any end group tag.
-      return;
-    }
-    switch(tag) {
+      switch(tag) {
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
           break;

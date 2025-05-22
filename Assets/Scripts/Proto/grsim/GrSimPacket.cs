@@ -23,13 +23,14 @@ public static partial class GrSimPacketReflection {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
           "ChJnclNpbV9QYWNrZXQucHJvdG8aFGdyU2ltX0NvbW1hbmRzLnByb3RvGhdn",
-          "clNpbV9SZXBsYWNlbWVudC5wcm90byJaCgxnclNpbV9QYWNrZXQSIQoIY29t",
-          "bWFuZHMYASABKAsyDy5nclNpbV9Db21tYW5kcxInCgtyZXBsYWNlbWVudBgC",
-          "IAEoCzISLmdyU2ltX1JlcGxhY2VtZW50"));
+          "clNpbV9SZXBsYWNlbWVudC5wcm90byKBAQoMZ3JTaW1fUGFja2V0EiYKCGNv",
+          "bW1hbmRzGAEgASgLMg8uZ3JTaW1fQ29tbWFuZHNIAIgBARIsCgtyZXBsYWNl",
+          "bWVudBgCIAEoCzISLmdyU2ltX1JlcGxhY2VtZW50SAGIAQFCCwoJX2NvbW1h",
+          "bmRzQg4KDF9yZXBsYWNlbWVudGIGcHJvdG8z"));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { global::GrSimCommandsReflection.Descriptor, global::GrSimReplacementReflection.Descriptor, },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-          new pbr::GeneratedClrTypeInfo(typeof(global::grSim_Packet), global::grSim_Packet.Parser, new[]{ "Commands", "Replacement" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(typeof(global::grSim_Packet), global::grSim_Packet.Parser, new[]{ "Commands", "Replacement" }, new[]{ "Commands", "Replacement" }, null, null, null)
         }));
   }
   #endregion
@@ -227,11 +228,7 @@ public sealed partial class grSim_Packet : pb::IMessage<grSim_Packet>
   #else
     uint tag;
     while ((tag = input.ReadTag()) != 0) {
-    if ((tag & 7) == 4) {
-      // Abort on any end group tag.
-      return;
-    }
-    switch(tag) {
+      switch(tag) {
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
           break;
@@ -260,11 +257,7 @@ public sealed partial class grSim_Packet : pb::IMessage<grSim_Packet>
   void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
     uint tag;
     while ((tag = input.ReadTag()) != 0) {
-    if ((tag & 7) == 4) {
-      // Abort on any end group tag.
-      return;
-    }
-    switch(tag) {
+      switch(tag) {
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
           break;
