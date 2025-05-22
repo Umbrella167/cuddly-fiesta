@@ -18,7 +18,7 @@ public class Control : MonoBehaviour
     public float selfPower = 0;
 
     public float maxRotationOutput = 500f; // 最大旋转输出值
-
+    float[] localVelocities;
     void Start()
     {
         
@@ -36,7 +36,17 @@ public class Control : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float[] localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot,packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
+        if (game_mode == Param.SIMULATE)
+        {
+            localVelocities = Control_Utils.GlobalToLocalVelocityNew(Vision.selfRobot, packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
+
+        }
+        else if (game_mode == Param.REAL)
+        {
+            localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot, packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
+
+        }
+        //float[] localVelocities = Control_Utils.GlobalToLocalVelocity(Vision.selfRobot,packet[control_robot_id].velX, packet[control_robot_id].velY, packet[control_robot_id].useGlobleVel);
         packet[control_robot_id].velX = localVelocities[0];
         packet[control_robot_id].velY = localVelocities[1];
         packet[control_robot_id].Encode();

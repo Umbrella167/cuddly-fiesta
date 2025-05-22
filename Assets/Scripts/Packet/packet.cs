@@ -73,6 +73,7 @@ public class Packet : MonoBehaviour
 
         public byte[] Encode_grSim()
         {
+
             grSim_Packet grSimPacket = new grSim_Packet();
 
             var commands = new grSim_Commands
@@ -114,6 +115,8 @@ public class Packet : MonoBehaviour
                 VelocityX = this.velX / 255f * 4f,
                 VelocityY = this.velY / 255f * 4f,
                 VelocityR = this.velR / 500f * 8.5f,
+
+                
                 // 根据 zss_cmd_type.proto, CmdVel 还有一个 use_imu 字段
                 UseImu = false // 假设这里不需要使用 IMU，根据实际情况设置
             };

@@ -118,10 +118,10 @@ public class Control_Sim : MonoBehaviour
         targetVy = 0;
 
         // 键盘输入处理
-        if (Input.GetKey(KeyCode.D)) targetVx = Param.SIM_NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.A)) targetVx = -Param.SIM_NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.W)) targetVy = -Param.SIM_NROMAL_SPEED;
-        if (Input.GetKey(KeyCode.S)) targetVy = Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.W)) targetVx = Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.S)) targetVx = -Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.D)) targetVy = -Param.SIM_NROMAL_SPEED;
+        if (Input.GetKey(KeyCode.A)) targetVy = Param.SIM_NROMAL_SPEED;
 
         // 速度模式切换
         if (Input.GetKey(KeyCode.LeftShift))

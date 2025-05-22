@@ -39,7 +39,25 @@ public class Control_Utils : MonoBehaviour
         // 6. 返回局部速度数组
         return new float[] { local_vx, local_vy };
     }
-     
+    static public float[] GlobalToLocalVelocityNew(GameObject robot, float global_vx, float global_vy, bool is_use = true)
+    {
+        if (robot == null)
+        {
+            Debug.LogError("GlobalToLocalVelocityNew: Robot GameObject is null. Returning global velocities directly.");
+            return new float[] { global_vx, global_vy };
+        }
+
+        // 获取机器人的全局旋转 (Y轴旋转)
+        float theta_w = robot.transform.eulerAngles.y * Mathf.Deg2Rad; // Convert to radians
+
+        // 旋转矩阵应用于速度向量
+        float local_vx = global_vx * Mathf.Cos(theta_w) + global_vy * Mathf.Sin(theta_w);
+        float local_vy = -global_vx * Mathf.Sin(theta_w) + global_vy * Mathf.Cos(theta_w);
+
+        // 返回局部速度数组
+        return new float[] { local_vx, local_vy };
+    }
+
     static public float PowerSet(float dist, float rate = 0.018f, float min = 3, float max = 165)
     {
 
